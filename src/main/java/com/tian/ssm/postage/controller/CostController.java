@@ -76,7 +76,7 @@ public class CostController {
     }
 
 
-    //删除Cost
+    //删除-Cost
     @RequestMapping(value = "deleteCost")
     @ResponseBody
     public String deleteCost(Cost cost) {
