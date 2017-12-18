@@ -1,8 +1,6 @@
 package com.tian.ssm.postage.bean;
 
 
-
-
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
@@ -107,7 +105,7 @@ public class Cost {
     }
 
     public void setStatus(String status) {
-        this.status = status == null ? null : status.trim();
+        this.status = status;
     }
 
     public String getDescr() {
@@ -115,7 +113,7 @@ public class Cost {
     }
 
     public void setDescr(String descr) {
-        this.descr = descr == null ? null : descr.trim();
+        this.descr = descr;
     }
 
     public Date getCreatime() {
@@ -139,6 +137,7 @@ public class Cost {
     }
 
     public void setCostType(String costType) {
-        this.costType = costType == null ? null : costType.trim();
+        this.costType = costType;
     }
 }
+

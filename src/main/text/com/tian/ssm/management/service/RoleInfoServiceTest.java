@@ -59,4 +59,5 @@ public class RoleInfoServiceTest {
         roleInfoMapper.findId(new RoleInfo(100));
     }
 
+
 }

@@ -46,8 +46,8 @@
          <!--!!!! Table Configurations !!!! -->
 
 
-        <table tableName="admin_role"
-               domainObjectName="AdminRole"
+        <table tableName="module_info"
+               domainObjectName="ModuleInfo"
                enableCountByExample="false"
                enableDeleteByExample="false"
                enableSelectByExample="false"

@@ -142,8 +142,8 @@ public class LoginController {
     //管理员查询
     @RequestMapping(value = "fee")
     @ResponseBody
-    public AjaxResult findFee(AdminInfo adminInfo){
-        return new AjaxResult(adminInfoService.find(adminInfo));
+    public AjaxResult findFee(AdminInfo adminInfo,String roleName,Integer moduleId){
+        return new AjaxResult(adminInfoService.find(adminInfo,roleName,moduleId));
     }
 
     //页面跳转到添加界面
@@ -166,13 +166,6 @@ public class LoginController {
         return "admin/admin_modi";
     }
 
-
-//    @RequestMapping("/addAdmin")
-//    @ResponseBody
-//    public String addAdmin(AdminInfo adminInfo, String Pwd,Integer[] roleId){
-//        String addAdmin = adminInfoService.addAdmin(adminInfo,Pwd,roleId);
-//        return addAdmin;
-//    }
 
     //跳主页
     @RequestMapping(value ="indexAdmin")
@@ -200,5 +193,22 @@ public class LoginController {
     }
 
 
+    //跳咨询
+    @RequestMapping(value = "feeAdmin")
+    @ResponseBody
+    public String feeAdmin(){
+        return "success";
+    }
 
+    @RequestMapping(value = "fee_Admin")
+    public String fee_Admin(){
+        return "fee/fee_list";
+    }
+
+    //模块
+    @RequestMapping(value = "findModuleInfo")
+    @ResponseBody
+    public AjaxResult findModuleInfo(){
+        return new AjaxResult(adminInfoService.find_ModuleInfo());
+    }
 }

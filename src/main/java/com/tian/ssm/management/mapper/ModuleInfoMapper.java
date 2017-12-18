@@ -8,4 +8,5 @@ public interface ModuleInfoMapper {
     int insertSelective(ModuleInfo record);
 
     String deleteName(ModuleInfo moduleName);
+
 }

@@ -18,6 +18,12 @@ import static org.junit.Assert.*;
 public class AdminInfoMapperTest {
 
     @Test
+    public void vagueAdmin() throws Exception {
+
+    }
+
+
+    @Test
     public void find_AdminR() throws Exception {
         adminInfoMapper.find_AdminR(2000).forEach(System.out::println);
     }
@@ -31,5 +37,11 @@ public class AdminInfoMapperTest {
 //        adminInfo.setAdminId(5000);
         adminInfoMapper.find_Admin(5000).forEach(System.out::println);
     }
+
+    @Test
+    public void find() throws Exception {
+        adminInfoMapper.find("%qqq%",-1).forEach(System.out::println);
+    }
+
 
 }

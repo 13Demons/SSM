@@ -2,6 +2,7 @@ package com.tian.ssm.login.mapper;
 
 import com.tian.ssm.login.bean.AdminInfo;
 import com.tian.ssm.login.bean.AdminRole;
+import com.tian.ssm.management.bean.ModuleInfo;
 import com.tian.ssm.management.bean.RoleInfo;
 import org.springframework.stereotype.Repository;
 
@@ -17,9 +18,9 @@ public interface AdminInfoMapper {
     AdminInfo loginAdmin(AdminInfo adminInfo);
 
     //查询(admin_info)
-    List<AdminInfo> find(AdminInfo adminInfo);
+    List<AdminInfo> find(String roleName,Integer moduleId);
 
-    //添加管理员(admin_info)
+    //添加管理员-(admin_info)
     void addAdmin(AdminInfo admin);
 
 
@@ -41,16 +42,6 @@ public interface AdminInfoMapper {
     //查询中间表的id(根据管理员id)
     List<AdminRole> findAdminAndRole(AdminInfo admin);
 
-    //修改管理员(姓名,账号,电话,邮箱,角色)
-    int updateAdmin(AdminInfo admin);
-
-    //查询插入以后的人
-    RoleInfo findInsertRoleInfo(RoleInfo roleInfo);
-
-    //向中间表添加ID
-    int insertAdminRole(Integer adminId,Integer roleId);
-
-
     //查找admin_info
     List<AdminInfo> find_Admin(Integer adminId);
 
@@ -64,7 +55,9 @@ public interface AdminInfoMapper {
     void deleteAR(Integer adminId);
 
     //添加中间表
-    void addAdminRole(int adminId, Integer roleId);
+    void addAdminRole(Integer adminId, Integer roleId);
 
+    //Module查询
+    List<ModuleInfo> find_ModuleInfo();
 
 }

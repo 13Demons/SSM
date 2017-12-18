@@ -2,6 +2,7 @@ package com.tian.ssm.login.service;
 
 import com.tian.ssm.login.bean.AdminInfo;
 import com.tian.ssm.login.bean.AdminRole;
+import com.tian.ssm.management.bean.ModuleInfo;
 import com.tian.ssm.management.bean.RoleInfo;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public interface AdminInfoService {
     //登录
     AdminInfo loginAdmin(AdminInfo adminInfo);
     //管理员查看
-    List<AdminInfo> find(AdminInfo adminInfo);
+    List<AdminInfo> find(AdminInfo adminInfo,String roleName,Integer moduleId);
 
     //添加管理员
     String addAdmin(AdminInfo adminInfo,String Pwd,Integer[] roleId);
@@ -31,5 +32,7 @@ public interface AdminInfoService {
     //查找中间表admin_role
     List<AdminRole> find_AdminR(Integer adminId);
 
+    //Module查询
+    List<ModuleInfo> find_ModuleInfo();
 
 }

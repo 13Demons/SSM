@@ -20,7 +20,18 @@
             <result column="role_id" property="roleId"/>
         </association>
 
+        <association property="moduleInfo" javaType="com.tian.ssm.management.bean.ModuleInfo">
+            <id column="module_id" property="moduleId"/>
+            <result column="module_name" property="moduleName"/>
+        </association>
+
+
     </resultMap>
+    <resultMap id="ModuleInfo" type="com.tian.ssm.management.bean.ModuleInfo">
+        <id column="module_id" property="moduleId"/>
+        <result column="module_name" property="moduleName"/>
+    </resultMap>
+
 
     <resultMap id="AdminRoleMap" type="com.tian.ssm.login.bean.AdminRole">
         <id column="admin_id" property="adminId"/>
@@ -95,27 +106,13 @@
         INSERT INTO admin_role (admin_id, role_id) VALUES (#{param1}, #{param2})
     </insert>
 
-    <insert id="insertAdminRole">
-        INSERT INTO admin_role VALUES (#{0}, #{1})
-    </insert>
-
-
-    <update id="updateAdmin">
-        UPDATE admin_info
-        <set>
-            <if test="adminCode != null and adminCode != ''">admin_code=#{adminCode},</if>
-            <if test="password != null and password != ''">password=#{password},</if>
-            <if test="name != null and name != ''">name=#{name},</if>
-            <if test="telephone != null and telephone != ''">telephone=#{telephone},</if>
-            <if test="email != null and email != ''">email=#{email},</if>
-            enrolldate=#{enrolldate},
-        </set>
-        where admin_id =#{adminId}
-    </update>
 
     <update id="updateA">
-      UPDATE admin_info SET admin_code=#{adminCode},telephone=#{telephone},email=#{email} WHERE admin_id =#{adminId}
+        UPDATE admin_info
+        SET admin_code = #{adminCode}, telephone = #{telephone}, email = #{email}
+        WHERE admin_id = #{adminId}
     </update>
+
 
     <delete id="deleteAdmin">
         DELETE FROM admin_info
@@ -146,7 +143,8 @@
     </delete>
 
     <delete id="deleteAR">
-      DELETE FROM admin_role WHERE admin_id=#{param1}
+        DELETE FROM admin_role
+        WHERE admin_id = #{param1}
     </delete>
 
 
@@ -155,40 +153,7 @@
         FROM admin_info
         WHERE name = #{name}
     </select>
-    <select id="find" resultType="com.tian.ssm.login.bean.AdminInfo" resultMap="BaseResultMap">
-        SELECT
-            a.admin_id   admin_id,
-            a.admin_code admin_code,
-            a.password   password,
-            a.name       name,
-            a.telephone  telephone,
-            a.email      email,
-            a.enrolldate enrolldate,
-            group_concat(r.role_name SEPARATOR ',')
-                         role_name
-        FROM admin_info a LEFT JOIN (role_info r, admin_role ar)
-                ON a.admin_id = ar.admin_id
-                   AND ar.role_id = r.role_id
-        GROUP BY a.admin_id
-    </select>
-    <select id="find1" resultType="com.tian.ssm.login.bean.AdminInfo" resultMap="BaseResultMap">
-        SELECT
-            a.admin_id   admin_id,
-            a.admin_code admin_code,
-            a.password   password,
-            a.name       name,
-            a.telephone  telephone,
-            a.email      email,
-            a.enrolldate enrolldate,
-            group_concat(mi.module_name SEPARATOR ',')
-                         module_name
-        FROM admin_info a LEFT JOIN (role_info r, admin_role ar, role_module rm, module_info mi)
-                ON a.admin_id = ar.admin_id
-                   AND ar.role_id = r.role_id
-                   AND r.role_id = rm.role_id
-                   AND rm.module_id = mi.module_id
-        GROUP BY a.admin_id
-    </select>
+
 
     <select id="findAdminName" resultType="com.tian.ssm.login.bean.AdminInfo">
         SELECT *
@@ -202,11 +167,6 @@
         WHERE admin_id = #{adminId}
     </select>
 
-    <select id="findInsertRoleInfo" resultType="com.tian.ssm.management.bean.RoleInfo">
-        SELECT *
-        FROM role_info
-        WHERE role_id = #{roleId};
-    </select>
 
     <select id="find_Admin" resultMap="BaseResultMap">
         SELECT *
@@ -215,7 +175,49 @@
     </select>
 
     <select id="find_AdminR" resultMap="AdminRoleMap">
-        SELECT *FROM admin_role WHERE admin_id=#{param2}
+        SELECT *
+        FROM admin_role
+        WHERE admin_id = #{param1}
+    </select>
+
+    <select id="find_ModuleInfo" resultMap="ModuleInfo">
+        SELECT *
+        FROM module_info
+    </select>
+
+    <!--模糊查询-->
+    <select id="find" resultType="com.tian.ssm.login.bean.AdminInfo" resultMap="BaseResultMap">
+        SELECT
+            a.admin_id   admin_id,
+            a.admin_code admin_code,
+            a.password   password,
+            a.name       name,
+            a.telephone  telephone,
+            a.email      email,
+            a.enrolldate enrolldate,
+            #             要连接的字符串
+            #            权限名字
+            group_concat(mi.module_name SEPARATOR ',')
+                         module_name,
+            #             角色名字
+            group_concat(r.role_name SEPARATOR ',')
+                         role_name
+        #         左连接
+        FROM admin_info a LEFT JOIN (role_info r, admin_role ar, role_module rm, module_info mi)
+                ON a.admin_id = ar.admin_id
+                   AND ar.role_id = r.role_id
+                   AND r.role_id = rm.role_id
+                   AND rm.module_id = mi.module_id
+
+            <where>
+                <if test="!param1.equals('%%')">
+                   AND r.role_name LIKE #{param1}
+                </if>
+                <if test="param2 != -1">
+                    AND mi.module_id = #{param2}
+                </if>
+            </where>
+        GROUP BY a.admin_id
     </select>
 
 

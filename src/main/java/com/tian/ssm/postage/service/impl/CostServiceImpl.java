@@ -17,8 +17,23 @@ public class CostServiceImpl implements CostService {
     @Resource
     private CostMapper costMapper;
 
+    //查询Cost
     @Override
     public List<Cost> findAllCost(Cost cost) {
         return costMapper.findAllCost(cost);
     }
+
+    //删除Cost
+    @Override
+    public Integer deleteCost(Integer costId) {
+        return costMapper.deleteCost(costId);
+    }
+
+    @Override
+    public List<Cost> findCostId(Integer costId) {
+        Cost cost = new Cost();
+        cost.setCostId(costId);
+        return costMapper.findCostId(cost);
+    }
+
 }

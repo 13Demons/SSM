@@ -4,10 +4,13 @@ import com.tian.ssm.login.bean.AdminInfo;
 import com.tian.ssm.login.bean.AdminRole;
 import com.tian.ssm.login.mapper.AdminInfoMapper;
 import com.tian.ssm.login.service.AdminInfoService;
+import com.tian.ssm.management.bean.ModuleInfo;
+import com.tian.ssm.management.mapper.ModuleInfoMapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -19,6 +22,7 @@ public class AdminInfoServiceImpl implements AdminInfoService {
     @Resource
     private AdminInfoMapper adminInfoMapper;
 
+
     @Override
     public AdminInfo loginAdmin(AdminInfo adminInfo) {
         return adminInfoMapper.loginAdmin(adminInfo);
@@ -26,8 +30,9 @@ public class AdminInfoServiceImpl implements AdminInfoService {
 
     //查询全部
     @Override
-    public List<AdminInfo> find(AdminInfo adminInfo) {
-        return adminInfoMapper.find(adminInfo);
+    public List<AdminInfo> find(AdminInfo adminInfo,String roleName,Integer moduleId) {
+        String name = "%" + roleName + "%";
+        return adminInfoMapper.find(name,moduleId);
     }
 
     //角色添加
@@ -100,6 +105,12 @@ public class AdminInfoServiceImpl implements AdminInfoService {
         return adminInfoMapper.find_AdminR(adminId);
     }
 
+    @Override
+    public List<ModuleInfo> find_ModuleInfo() {
+        return adminInfoMapper.find_ModuleInfo();
+    }
+
+
     //修改
     @Override
     public String updateAdmin(AdminInfo adminInfo, Integer[] roleId) {
@@ -128,4 +139,6 @@ public class AdminInfoServiceImpl implements AdminInfoService {
         }
 
     }
+
+
 }

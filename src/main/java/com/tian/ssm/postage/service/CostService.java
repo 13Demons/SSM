@@ -10,5 +10,12 @@ import java.util.List;
 
 public interface CostService {
 
+    //查询Cost
     List<Cost> findAllCost(Cost cost);
+
+    //删除Cost
+    Integer deleteCost(Integer costId);
+
+    //显示详情
+    List<Cost> findCostId(Integer costId);
 }

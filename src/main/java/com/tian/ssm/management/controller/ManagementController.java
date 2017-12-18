@@ -23,7 +23,7 @@ import java.util.List;
 @Controller
 public class ManagementController {
 
-    @Resource(name ="roleInfo")
+    @Resource(name = "roleInfo")
     private RoleInfoService roleInfoService;
 
 
@@ -37,57 +37,48 @@ public class ManagementController {
     @RequestMapping(value = "Index")
     //必须要有注解
     @ResponseBody
-    public String admin1(){
+    public String admin1() {
         return "success";
     }
 
     @RequestMapping(value = "List")
-    public String admin(){
+    public String admin() {
         return "index";
     }
 
 
-
-
-
-
     @RequestMapping(value = "/ReleMan")
     @ResponseBody
-    public AjaxResult Role(RoleInfo roleInfo){
+    public AjaxResult Role(RoleInfo roleInfo) {
         return new AjaxResult(roleInfoService.findAllRole(roleInfo));
 
     }
 
 
-
-
     @RequestMapping(value = "/role_add")
-    public String add(){
+    public String add() {
         return "/role/role_add";
     }
-
 
 
     //添加
     @RequestMapping(value = "add_add")
     @ResponseBody
-    public String addRole(RoleInfo roleInfo,Integer[] moduleId ){
+    public String addRole(RoleInfo roleInfo, Integer[] moduleId) {
 
         return roleInfoService.addRole(roleInfo, moduleId);
     }
 
     @RequestMapping(value = "roles")
-    public String R(){
+    public String R() {
         return "/role/role_list";
     }
 
 
-
-
     //删除
-    @RequestMapping(value="delete_Role")
+    @RequestMapping(value = "delete_Role")
     @ResponseBody
-    public String deleteRole(RoleInfo roleInfo){
+    public String deleteRole(RoleInfo roleInfo) {
         //删除中间表
         roleModuleService.delRoleInMiddleTable(roleInfo);
         //删除Id
@@ -98,7 +89,7 @@ public class ManagementController {
 
 
     @RequestMapping(value = "role_list")
-    public String deletR(){
+    public String deletR() {
         return "/role/role_list";
     }
 
@@ -126,10 +117,10 @@ public class ManagementController {
     //修改角色
     @RequestMapping("/updateRole")
     @ResponseBody
-    public RoleInfo updateRole(RoleInfo roleInfo,int[] module) {
+    public RoleInfo updateRole(RoleInfo roleInfo, int[] module) {
         roleInfoService.updateRole(roleInfo);
         roleInfoService.deleteRoleModule(roleInfo.getRoleId());
-        roleInfoService.addRoleModule(roleInfo.getRoleId(),module);
+        roleInfoService.addRoleModule(roleInfo.getRoleId(), module);
         return roleInfo;
     }
 
@@ -138,55 +129,62 @@ public class ManagementController {
     @ResponseBody
     public String echo(HttpSession session) {
         int roleId = (int) session.getAttribute("roleId");
-        List<RoleInfo> ids =  roleInfoService.findNameById(roleId);
+        List<RoleInfo> ids = roleInfoService.findNameById(roleId);
         return ids.get(0).getRoleName();
     }
 
 
     //管理添加
-    @RequestMapping("/addAdmin")
+    @RequestMapping(value = "/addAdmin")
     @ResponseBody
-    public String addAdmin(AdminInfo adminInfo, String Pwd, Integer[] roleId){
-        String addAdmin = adminInfoService.addAdmin(adminInfo,Pwd,roleId);
+    public String addAdmin(AdminInfo adminInfo, String Pwd, Integer[] roleId) {
+        String addAdmin = adminInfoService.addAdmin(adminInfo, Pwd, roleId);
         return addAdmin;
     }
 
     //删除管理
-    @RequestMapping("/deleteAdmin")
+    @RequestMapping(value = "/deleteAdmin")
     @ResponseBody
-    public String deleteAdmin(AdminInfo adminInfo){
+    public String deleteAdmin(AdminInfo adminInfo) {
+
         return adminInfoService.deleteAdmin(adminInfo);
     }
 
     //管理回显
-    @RequestMapping("/EchoAdmin")
+    @RequestMapping(value = "/EchoAdmin")
     @ResponseBody
-    public List<AdminInfo>EchoAdmin(HttpSession session){
+    public List<AdminInfo> EchoAdmin(HttpSession session) {
         Integer adminId = (Integer) session.getAttribute("adminId");
-
         List<AdminInfo> admin = adminInfoService.find_Admin(adminId);
-
         return admin;
     }
 
     //管理回显中间表
-    @RequestMapping("/EchoAdminR")
+    @RequestMapping(value = "/EchoAdminR")
     @ResponseBody
-    public List<AdminRole>EchoAdminR(HttpSession session){
+    public List<AdminRole> EchoAdminR(HttpSession session) {
         Integer adminId = (Integer) session.getAttribute("adminId");
         return adminInfoService.find_AdminR(adminId);
     }
 
     //管理修改
-    @RequestMapping("/updateAdmin")
+    @RequestMapping(value = "/updateAdmin")
     @ResponseBody
-    public String updateAdmin(AdminInfo adminInfo, Integer[] roleId,HttpSession session){
+    public String updateAdmin(AdminInfo adminInfo, Integer[] roleId, HttpSession session) {
         adminInfo.setAdminId((Integer) session.getAttribute("adminId"));
         System.out.println(adminInfo);
         for (Integer integer : roleId) {
             System.out.println(integer);
         }
-        return adminInfoService.updateAdmin(adminInfo,roleId);
+        return adminInfoService.updateAdmin(adminInfo, roleId);
     }
+
+    //下拉模块查询(权限)
+    @RequestMapping(value = "/find_ModuleInfo")
+    @ResponseBody
+    public AjaxResult findModuleInfo() {
+        return new AjaxResult(adminInfoService.find_ModuleInfo());
+    }
+
 
 }

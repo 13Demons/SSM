@@ -19,6 +19,12 @@ import static org.junit.Assert.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:SSM-mybatis.xml")
 public class CostServiceTest {
+    @Test
+    public void deleteCost() throws Exception {
+        Cost cost = new Cost();
+        cost.setCostId(1);
+        System.out.println(costMapper.findCostId(cost));
+    }
 
     @Resource
     private CostMapper costMapper;

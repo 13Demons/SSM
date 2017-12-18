@@ -16,7 +16,10 @@ import javax.annotation.Resource;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:SSM-mybatis.xml")
 public class AdminInfoServiceTest {
-
+    @Test
+    public void find_ModuleInfo() throws Exception {
+        adminInfoMapper.find_ModuleInfo().forEach(System.out::println);
+    }
 
 
     @Resource
@@ -29,7 +32,7 @@ public class AdminInfoServiceTest {
 
     @Test
     public void find() throws Exception {
-        System.out.println(adminInfoMapper.find(new AdminInfo()));
+
     }
 
 

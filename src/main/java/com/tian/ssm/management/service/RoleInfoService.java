@@ -16,16 +16,11 @@ public interface RoleInfoService {
 
     Integer delete(Integer adminId);
 
-//    String addRole(RoleInfo roleInfo,List<Integer> moduleId);
-
     String addRole(RoleInfo roleInfo,Integer[] moduleId);
 
     Integer deleteName(RoleInfo roleInfo);
 
     RoleInfo findId(RoleInfo roleInfo);
-
-
-
 
     //编辑角色
     void updateRole(RoleInfo role);
@@ -36,9 +31,9 @@ public interface RoleInfoService {
     //在重新添加角色权限
     void addRoleModule(int roleId ,int[] module);
 
-
     List<RoleInfo> findNameById(int roleId);
-    //    回显权限
+
+    //回显权限
     List<RoleModule> roleModules(int roleId);
 
 
