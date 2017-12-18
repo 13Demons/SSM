@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tian.ssm.management.mapper.ModuleInfoMapper">
+  <resultMap id="BaseResultMap" type="com.tian.ssm.management.bean.ModuleInfo">
+    <result column="module_id" jdbcType="INTEGER" property="moduleId" />
+    <result column="module_name" jdbcType="VARCHAR" property="moduleName" />
+  </resultMap>
+  <insert id="insert" parameterType="com.tian.ssm.management.bean.ModuleInfo">
+    insert into module_info (module_id, module_name)
+    values (#{moduleId,jdbcType=INTEGER}, #{moduleName,jdbcType=VARCHAR})
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.tian.ssm.management.bean.ModuleInfo">
+
+    insert into module_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="moduleId != null">
+        module_id,
+      </if>
+      <if test="moduleName != null">
+        module_Name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="moduleId != null">
+        #{moduleId,jdbcType=INTEGER},
+      </if>
+      <if test="moduleName != null">
+        #{moduleName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+
+    <delete id="deleteName">
+      DELETE FROM module_info WHERE module_name=#{moduleName}
+    </delete>
+
+</mapper>

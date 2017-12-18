@@ -1,0 +1,205 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+    <link type="text/css" rel="stylesheet" media="all" href="../styles/global.css"/>
+    <link type="text/css" rel="stylesheet" media="all" href="../styles/global_color.css"/>
+    <script src="/js/jquery-3.2.1.js"></script>
+    <script language="javascript" type="text/javascript">
+        //保存成功的提示消息
+        function showResult() {
+            showResultDiv(true);
+            window.setTimeout("showResultDiv(false);", 3000);
+            window.setTimeout('location.href = "admin_list"', 3000)
+        }
+        function showResultDiv(flag) {
+            var divResult = document.getElementById("save_result_info");
+            if (flag)
+                divResult.style.display = "block";
+            else
+                divResult.style.display = "none";
+        }
+
+        $(document).ready(function () {
+            $.ajax({
+                url: "/ReleMan",
+                success: function (result) {
+                    for (var i = 0; i < result.data.length; i++) {
+                        var stu = result.data[i];
+                        roleId = $("<li></li>").append(
+                                "<input id='" + stu.roleId + "' type='checkbox' name='inp0' value='" + stu.roleId + "'>" + stu.roleName);
+                        $("#ul").append(roleId);
+                    }
+                    echorole();
+                }
+            })
+        })
+
+        function echorole() {
+            <!--修改回显-->
+                $.ajax({
+                url: "EchoAdmin",
+                success: function (result) {
+                    console.log(result);
+                    $("#C").val(result[0].adminCode);
+                    $("#Na").val(result[0].name);
+                    $("#T").val(result[0].telephone);
+                    $("#E").val(result[0].email);
+                }
+            });
+
+            $.ajax({
+                url: "/EchoAdminR",
+                type: "POST",
+                success: function (result) {
+                    console.log(result);
+                    for (var i = 0; i < result.length; i++) {
+                        var p = result[i].roleId;
+                        $("#" + p).prop("checked", true);
+                    }
+                }
+            })
+
+        }
+
+    </script>
+</head>
+<body>
+<!--Logo区域开始-->
+<div id="header">
+    <img src="../images/logo.png" alt="logo" class="left"/>
+    <a href="#">[退出]</a>
+</div>
+<!--Logo区域结束-->
+<!--导航区域开始-->
+<div id="navi">
+    <ul id="menu">
+        <li><a href="../index.html" class="index_off"></a></li>
+        <li><a href="../role/role_list.html" class="role_off"></a></li>
+        <li><a href="../admin/admin_list.html" class="admin_on"></a></li>
+        <li><a href="../fee/fee_list.html" class="fee_off"></a></li>
+        <li><a href="../account/account_list.html" class="account_off"></a></li>
+        <li><a href="../service/service_list.html" class="service_off"></a></li>
+        <li><a href="../bill/bill_list.html" class="bill_off"></a></li>
+        <li><a href="../report/report_list.html" class="report_off"></a></li>
+        <li><a href="../user/user_info.html" class="information_off"></a></li>
+        <li><a href="../user/user_modi_pwd.html" class="password_off"></a></li>
+    </ul>
+</div>
+<!--导航区域结束-->
+<!--主要区域开始-->
+<div id="main">
+    <div id="save_result_info" class="save_success">保存成功！</div>
+    <form action="" method="" class="main_form">
+
+        <div class="text_info clearfix"><span>姓名：</span></div>
+        <div class="input_info">
+            <input type="text" id="C"/>
+            <div class="validate_msg_long" id="code"></div>
+
+        </div>
+
+        <div class="text_info clearfix"><span>管理员账号：</span></div>
+        <div class="input_info">
+            <input type="text" id="Na" readonly="readonly"/>
+            <div class="validate_msg_long" id="name"></div>
+        </div>
+
+        <div class="text_info clearfix"><span>电话：</span></div>
+        <div class="input_info">
+
+            <input type="text" class="width200" id="T"/>
+            <div class="validate_msg_medium error_msg" id="telephone"></div>
+
+        </div>
+        <div class="text_info clearfix"><span>Email：</span></div>
+        <div class="input_info">
+
+            <input type="text" class="width200" id="E"/>
+            <div class="validate_msg_medium error_msg" id="email"></div>
+
+        </div>
+        <div class="text_info clearfix"><span>角色：</span></div>
+        <div class="input_info_high">
+            <div class="input_info_scroll">
+
+                <ul id="ul">
+
+                </ul>
+
+            </div>
+            <span class="required"></span>
+            <div class="validate_msg_tiny error_msg" id="I"></div>
+        </div>
+        <div class="button_info clearfix">
+            <!--onclick="showResult()-->
+            <input type="button" value="保存" class="btn_save" id="upAdmin"/>
+            <input type="button" value="取消" class="btn_save" onclick="javascript:window.history.back(-1)"/>
+        </div>
+    </form>
+</div>
+<!--主要区域结束-->
+<div id="footer">
+    <span>[源自北美的技术，最优秀的师资，最真实的企业环境，最适用的实战项目]</span>
+    <br/>
+    <span>版权所有(C)云科技有限公司 </span>
+</div>
+</body>
+
+<script>
+    $("#upAdmin").click(function () {
+        var url= window.location.search;
+        var adminId = url.split("=")[1];
+        var n = [];
+        var roleId = $('input[name=inp0]');
+        for (var i = 0; i < roleId .length; i++) {
+            if (roleId [i].checked) {
+                n.push(roleId [i].value);
+            }
+        }
+        if (n.length == 0) {
+            n.push(0)
+        }
+        $.ajax({
+            url: "/updateAdmin",
+            traditional: true,
+            data: {
+                "adminCode":$("#C").val(),
+                "name": $("#Na").val(),
+                "telephone": $("#T").val(),
+                "email": $("#E").val(),
+                "adminId": adminId,
+                "roleId":n
+            },
+            success: function (resule) {
+                if (resule == "AdminCode_Length") {
+                    document.getElementById("code").innerHTML = '20长度以内的汉字、字母、数字的组合'
+                } else if (resule == "AdminName_Length") {
+                    document.getElementById("name").innerHTML = '30长度以内的字母、数字和下划线的组合'
+                } else if (resule == "Admin_Telephone") {
+                    document.getElementById("telephone").innerHTML = '正确的电话号码格式：手机或固话'
+                } else if (resule == "Admin_Email") {
+                    document.getElementById("email").innerHTML = '输入正确的 email 格式'
+                } else if (resule == "roleError") {
+                    document.getElementById("I").innerHTML = '至少选择一个'
+                } else if (resule == "success") {
+                    document.getElementById("code").innerHTML = '';
+                    document.getElementById("name").innerHTML = '';
+                    document.getElementById("telephone").innerHTML = '';
+                    document.getElementById("email").innerHTML = '';
+                    document.getElementById("I").innerHTML = '';
+                    showResult();
+                }
+
+
+            }
+        })
+    })
+
+
+</script>
+
+
+</html>

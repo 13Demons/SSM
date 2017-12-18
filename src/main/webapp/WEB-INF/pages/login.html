@@ -1,0 +1,100 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title></title>
+        <link type="text/css" rel="stylesheet" media="all" href="styles/global.css" />
+        <link type="text/css" rel="stylesheet" media="all" href="styles/global_color.css" />
+        <script src="/js/jquery-3.2.1.js"></script>
+    </head>
+    <body class="index">
+        <div class="login_box">
+            <table>
+                <tr>
+                    <td class="login_info">账号：</td>
+                    <td colspan="2"><input id="name"  name="name" type="text" class="width150" /></td>
+                    <td class="login_error_info">
+                        <span id="n" class="required"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="login_info">密码：</td>
+                    <td colspan="2"><input id="password"  name="password" type="password" class="width150" /></td>
+                    <td>
+                        <span id="p" class="required"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="login_info">验证码：</td>
+                    <td class="width70"><input id="code" name="code" type="text" class="width70" /></td>
+                    <td><img src="/code" alt="验证码" title="点击更换" id="codeImg" /></td>
+                    <td>
+                        <span id="v" class="required"></span>
+                    </td>
+                </tr>            
+                <tr>
+                    <td></td>
+                    <td class="login_button" colspan="2">
+                        <a id="lo"><img src="images/login_btn.png" /></a>
+                    </td>
+                    <td>
+                        <span id="q" class="required"></span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </body>
+
+<script>
+
+    window.onload = function init() {
+        document.getElementById("codeImg").onclick = function () {
+            document.getElementById("codeImg").setAttribute("src", "/code?timeStamp=" + Math.random())
+        }
+    }
+
+
+    $("#lo").click(function () {
+        var name = $("#name").val();
+        var password = $("#password").val();
+        var code = $("#code").val();
+        $.ajax({
+            url: "/login",
+            type:"POST",
+            data: {"name": name, "password": password,"code":code},
+            success: function (result) {
+                if (result=="error"){
+                    document.getElementById('n').innerHTML='用户名为空'
+                }
+                else if (result=="errorNull"){
+                    document.getElementById('p').innerHTML='密码为空'
+                }
+                else if (result=="NameLength"){
+                    document.getElementById('n').innerHTML='用户名为3~8位'
+                }
+                else if (result=="PwdLength"){
+                    document.getElementById('p').innerHTML='密码为3~8位'
+                }
+                else if (result=="NameError"){
+                    document.getElementById('q').innerHTML='账号不匹配'
+                }
+                else if (result=="PwdError"){
+                    document.getElementById('q').innerHTML='密码不匹配'
+                }
+                else if (result=="codeError"){
+                    document.getElementById('v').innerHTML='验证码不匹配'
+                }
+                if (result=="success"){
+                    window.location.href='logins';
+                }
+
+            }
+        });
+    });
+
+
+</script>
+
+
+
+</html>

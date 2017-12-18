@@ -1,0 +1,80 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title></title>
+        <link type="text/css" rel="stylesheet" media="all" href="styles/global.css" />
+        <link type="text/css" rel="stylesheet" media="all" href="styles/global_color.css" />
+        <script src="/js/jquery-3.2.1.js"></script>
+    </head>
+    <body class="index">
+        <!--导航区域开始-->
+        <div id="index_navi">
+            <ul id="menu">
+                <li><a href="#" class="index_on"></a></li>
+                <li><a id="role" href="#" class="role_off"></a></li>
+                <li><a onclick="ad(this)"  href="#" class="admin_off"></a></li>
+                <li><a onclick="list(this)"   href="#" class="fee_off"></a></li>
+                <li><a onclick="account(this)" href="#" class="account_off"></a></li>
+                <li><a onclick="service(this)" href="#" class="service_off"></a></li>
+                <li><a onclick="bill(this)" href="#" class="bill_off"></a></li>
+                <li><a onclick="report(this)" href="#" class="report_off"></a></li>
+                <li><a onclick="user(this)"  href="#" class="information_off"></a></li>
+                <li><a onclick="usermodi(this)" href="#" class="password_off"></a></li>
+            </ul>
+        </div>
+    </body>
+
+    <script>
+
+        $("#role").click(function () {
+            $.ajax({
+                url: "/Role",
+                success: function (result) {
+                    if (result=="success")
+                        window.location.href = 'RoleList';
+                }
+            })
+        });
+
+
+        function list() {
+            window.location.href = "fee_list";
+        }
+
+        function ad() {
+            window.location.href = "admin_list";
+        }
+
+        function account() {
+            window.location.href = "account_list";
+        }
+
+
+
+
+
+        function service() {
+            window.location.href = "service_list";
+        }
+
+        function bill() {
+            window.location.href = "bill_list";
+        }
+
+        function report() {
+            window.location.href = "report_list";
+        }
+
+        function user() {
+            window.location.href = "user_info";
+        }
+
+        function usermodi() {
+            window.location.href = "user_modi_pwd";
+        }
+
+
+
+    </script>
+</html>

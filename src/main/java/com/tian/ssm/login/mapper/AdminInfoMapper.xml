@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tian.ssm.login.mapper.AdminInfoMapper">
+    <resultMap id="BaseResultMap" type="com.tian.ssm.login.bean.AdminInfo">
+        <result column="admin_id" jdbcType="INTEGER" property="adminId"/>
+        <result column="admin_code" jdbcType="VARCHAR" property="adminCode"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="telephone" jdbcType="VARCHAR" property="telephone"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="enrolldate" jdbcType="TIMESTAMP" property="enrolldate"/>
+
+        <association property="roleInfo" javaType="com.tian.ssm.management.bean.RoleInfo">
+            <result column="role_id" jdbcType="INTEGER" property="roleId"/>
+            <result column="role_name" jdbcType="VARCHAR" property="roleName"/>
+        </association>
+
+        <association property="adminRole" javaType="com.tian.ssm.login.bean.AdminRole">
+            <id column="admin_id" property="adminId"/>
+            <result column="role_id" property="roleId"/>
+        </association>
+
+    </resultMap>
+
+    <resultMap id="AdminRoleMap" type="com.tian.ssm.login.bean.AdminRole">
+        <id column="admin_id" property="adminId"/>
+        <result column="role_id" property="roleId"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.tian.ssm.login.bean.AdminInfo">
+        INSERT INTO admin_info (admin_id, admin_code, password,
+                                name, telephone, email,
+                                enrolldate)
+        VALUES (#{adminId,jdbcType=INTEGER}, #{adminCode,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
+                #{name,jdbcType=VARCHAR}, #{telephone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR},
+                #{enrolldate,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertSelective" parameterType="com.tian.ssm.login.bean.AdminInfo">
+        insert into admin_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="adminId != null">
+                admin_id,
+            </if>
+            <if test="adminCode != null">
+                admin_code,
+            </if>
+            <if test="password != null">
+                password,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="telephone != null">
+                telephone,
+            </if>
+            <if test="email != null">
+                email,
+            </if>
+            <if test="enrolldate != null">
+                enrolldate,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="adminId != null">
+                #{adminId,jdbcType=INTEGER},
+            </if>
+            <if test="adminCode != null">
+                #{adminCode,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="telephone != null">
+                #{telephone,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="enrolldate != null">
+                #{enrolldate,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+
+    <insert id="addAdmin" keyProperty="adminId" useGeneratedKeys="true">
+        INSERT INTO admin_info (admin_id, admin_code, name, password, telephone, email, enrolldate)
+        VALUES (#{adminId}, #{adminCode}, #{name}, #{password}, #{telephone}, #{email}, #{enrolldate})
+    </insert>
+
+    <insert id="addAdminRole">
+        INSERT INTO admin_role (admin_id, role_id) VALUES (#{param1}, #{param2})
+    </insert>
+
+    <insert id="insertAdminRole">
+        INSERT INTO admin_role VALUES (#{0}, #{1})
+    </insert>
+
+
+    <update id="updateAdmin">
+        UPDATE admin_info
+        <set>
+            <if test="adminCode != null and adminCode != ''">admin_code=#{adminCode},</if>
+            <if test="password != null and password != ''">password=#{password},</if>
+            <if test="name != null and name != ''">name=#{name},</if>
+            <if test="telephone != null and telephone != ''">telephone=#{telephone},</if>
+            <if test="email != null and email != ''">email=#{email},</if>
+            enrolldate=#{enrolldate},
+        </set>
+        where admin_id =#{adminId}
+    </update>
+
+    <update id="updateA">
+      UPDATE admin_info SET admin_code=#{adminCode},telephone=#{telephone},email=#{email} WHERE admin_id =#{adminId}
+    </update>
+
+    <delete id="deleteAdmin">
+        DELETE FROM admin_info
+        WHERE admin_id = #{adminId}
+    </delete>
+
+    <delete id="deleteRoleModule">
+        DELETE FROM role_module WHERE role_id IN
+        <if test="list != null and list.size() > 0">
+            <foreach collection="list" item="role" open="(" close=")" separator=",">
+                #{role.roleId}
+            </foreach>
+        </if>
+    </delete>
+
+    <delete id="deleteAdmin_role">
+        DELETE FROM admin_role
+        WHERE admin_id = #{adminId}
+    </delete>
+
+    <delete id="deleteRole_Info">
+        DELETE FROM role_info WHERE role_id IN
+        <if test="list != null and list.size() > 0">
+            <foreach collection="list" item="role" open="(" close=")" separator=",">
+                #{role.roleId}
+            </foreach>
+        </if>
+    </delete>
+
+    <delete id="deleteAR">
+      DELETE FROM admin_role WHERE admin_id=#{param1}
+    </delete>
+
+
+    <select id="loginAdmin" resultType="com.tian.ssm.login.bean.AdminInfo">
+        SELECT *
+        FROM admin_info
+        WHERE name = #{name}
+    </select>
+    <select id="find" resultType="com.tian.ssm.login.bean.AdminInfo" resultMap="BaseResultMap">
+        SELECT
+            a.admin_id   admin_id,
+            a.admin_code admin_code,
+            a.password   password,
+            a.name       name,
+            a.telephone  telephone,
+            a.email      email,
+            a.enrolldate enrolldate,
+            group_concat(r.role_name SEPARATOR ',')
+                         role_name
+        FROM admin_info a LEFT JOIN (role_info r, admin_role ar)
+                ON a.admin_id = ar.admin_id
+                   AND ar.role_id = r.role_id
+        GROUP BY a.admin_id
+    </select>
+    <select id="find1" resultType="com.tian.ssm.login.bean.AdminInfo" resultMap="BaseResultMap">
+        SELECT
+            a.admin_id   admin_id,
+            a.admin_code admin_code,
+            a.password   password,
+            a.name       name,
+            a.telephone  telephone,
+            a.email      email,
+            a.enrolldate enrolldate,
+            group_concat(mi.module_name SEPARATOR ',')
+                         module_name
+        FROM admin_info a LEFT JOIN (role_info r, admin_role ar, role_module rm, module_info mi)
+                ON a.admin_id = ar.admin_id
+                   AND ar.role_id = r.role_id
+                   AND r.role_id = rm.role_id
+                   AND rm.module_id = mi.module_id
+        GROUP BY a.admin_id
+    </select>
+
+    <select id="findAdminName" resultType="com.tian.ssm.login.bean.AdminInfo">
+        SELECT *
+        FROM admin_info
+        WHERE admin_id = #{adminId}
+    </select>
+
+    <select id="findAdminAndRole" resultType="com.tian.ssm.login.bean.AdminRole">
+        SELECT *
+        FROM admin_role
+        WHERE admin_id = #{adminId}
+    </select>
+
+    <select id="findInsertRoleInfo" resultType="com.tian.ssm.management.bean.RoleInfo">
+        SELECT *
+        FROM role_info
+        WHERE role_id = #{roleId};
+    </select>
+
+    <select id="find_Admin" resultMap="BaseResultMap">
+        SELECT *
+        FROM admin_info
+        WHERE admin_id = #{param1}
+    </select>
+
+    <select id="find_AdminR" resultMap="AdminRoleMap">
+        SELECT *FROM admin_role WHERE admin_id=#{param2}
+    </select>
+
+
+</mapper>
