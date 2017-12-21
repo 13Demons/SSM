@@ -104,6 +104,15 @@
         </trim>
     </insert>
 
+    <!--修改Cost-->
+    <update id="updateCost">
+        UPDATE cost
+        SET cost_name=#{costName},base_duration=#{baseDuration},base_cost=#{baseCost},unit_cost=#{unitCost},descr=#{descr},
+            startime=#{startime}
+        WHERE cost_id = #{costId}
+    </update>
+
+
     <!--删除-->
     <delete id="deleteCost">
         DELETE FROM cost
@@ -119,6 +128,19 @@
     <select id="findCostId" resultMap="CostMap">
        SELECT * FROM cost WHERE cost_id = #{costId}
     </select>
+    <select id="baseClass" resultMap="CostMap">
+        SELECT *,base_cost FROM cost ORDER BY base_cost
+    </select>
+    <select id="Baselarge" resultMap="CostMap">
+        SELECT *,base_cost FROM cost ORDER BY base_cost  DESC
+    </select>
+    <select id="Timelength" resultMap="CostMap">
+        SELECT  *,base_duration FROM cost ORDER BY base_duration
+    </select>
+    <select id="Timelarge" resultMap="CostMap">
+        SELECT *,base_duration FROM cost ORDER BY base_duration DESC
+    </select>
+
 
 
 </mapper>

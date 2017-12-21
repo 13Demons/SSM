@@ -25,20 +25,20 @@
         </javaTypeResolver>
 
         <!-- !!!! Model Configurations !!!! -->
-        <javaModelGenerator targetPackage="com.tian.ssm.login.bean"
+        <javaModelGenerator targetPackage="com.tian.ssm.accounting.bean"
                             targetProject="./src/main/java">
             <property name="enableSubPackages" value="false"/>
             <property name="trimStrings" value="true"/>
         </javaModelGenerator>
 
         <!-- !!!! Mapper XML Configurations !!!! -->
-        <sqlMapGenerator targetPackage="com.tian.ssm.login.mapper"
+        <sqlMapGenerator targetPackage="com.tian.ssm.accounting.mapper"
                          targetProject="./src/main/java">
             <property name="enableSubPackages" value="false"/>
         </sqlMapGenerator>
 
         <!-- !!!! Mapper Interface Configurations !!!! -->
-        <javaClientGenerator targetPackage="com.tian.ssm.login.mapper"
+        <javaClientGenerator targetPackage="com.tian.ssm.accounting.mapper"
                              targetProject="./src/main/java" type="XMLMAPPER">
             <property name="enableSubPackages" value="false"/>
         </javaClientGenerator>
@@ -46,8 +46,8 @@
          <!--!!!! Table Configurations !!!! -->
 
 
-        <table tableName="module_info"
-               domainObjectName="ModuleInfo"
+        <table tableName="account"
+               domainObjectName="Account"
                enableCountByExample="false"
                enableDeleteByExample="false"
                enableSelectByExample="false"

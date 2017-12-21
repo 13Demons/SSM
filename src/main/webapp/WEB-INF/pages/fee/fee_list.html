@@ -9,12 +9,155 @@
     <script src="/js/jquery-3.2.1.js"></script>
     <script language="javascript" type="text/javascript">
         //排序按钮的点击事件
-        function sort(btnObj) {
-            if (btnObj.className == "sort_desc")
-                btnObj.className = "sort_asc";
-            else
+        //击费
+        function sortBasefee(btnObj) {
+            if (btnObj.className=="sort_asc"){
                 btnObj.className = "sort_desc";
+            }else {
+                btnObj.className = "sort_asc";
+            }
+
+            $("#tbody").empty();
+            if (btnObj.className == "sort_desc")
+                $.ajax({
+                    url:"/baseClass",
+                    success: function (result) {
+                        console.log(result);
+                        if (result.code == "0") {
+                            for (var i = 0; i < result.data.length; i++) {
+                                var stu = result.data[i];
+                                var costId = $("<td></td>").text(stu.costId);
+                                var costName = $("<td onclick='detailsCost("+stu.costId+")'></td>").text(stu.costName);
+                                var baseDuration = $("<td></td>").text(stu.baseDuration);
+                                var baseCost = $("<td></td>").text(stu.baseCost);
+                                var unitCost = $("<td></td>").text(stu.unitCost);
+                                var creatime = $("<td></td>").text(stu.creatime);
+                                var startime = $("<td></td>").text(stu.startime);
+                                var status = $("<td></td>").text(stu.status);
+                                var du = $("<td></td>").append('<input id="sta" type="button" value="启用" onclick="startFee(this)" class="btn_start"/> ' +
+                                        '<input id="updaet" type="button" value="修改"  ' +
+                                        'onclick="updateCost(' + stu.costId + ')" class="btn_modify"/>' + '' +
+                                        '<input id="delete"  type="button" value="删除"  ' +
+                                        'onclick="deleteCost(' + stu.costId + ')"  class="btn_delete"/>')
+                                var tr = $("<tr></tr>").append(costId)
+                                        .append(costName).append(baseDuration).append(baseCost)
+                                        .append(unitCost).append(creatime).append(startime)
+                                        .append(status).append(du)
+                                $("#tbody").append(tr);
+                                console.log(stu);
+                            }
+                        }
+                    }
+                })
+            else
+                $.ajax({
+                    url:"/Baselarge",
+                    success: function (result) {
+                        console.log(result);
+                        if (result.code == "0") {
+                            for (var i = 0; i < result.data.length; i++) {
+                                var stu = result.data[i];
+                                var costId = $("<td></td>").text(stu.costId);
+                                var costName = $("<td onclick='detailsCost("+stu.costId+")'></td>").text(stu.costName);
+                                var baseDuration = $("<td></td>").text(stu.baseDuration);
+                                var baseCost = $("<td></td>").text(stu.baseCost);
+                                var unitCost = $("<td></td>").text(stu.unitCost);
+                                var creatime = $("<td></td>").text(stu.creatime);
+                                var startime = $("<td></td>").text(stu.startime);
+                                var status = $("<td></td>").text(stu.status);
+                                var du = $("<td></td>").append('<input id="sta" type="button" value="启用" onclick="startFee(this)" class="btn_start"/> ' +
+                                        '<input id="updaet" type="button" value="修改"  ' +
+                                        'onclick="updateCost(' + stu.costId + ')" class="btn_modify"/>' + '' +
+                                        '<input id="delete"  type="button" value="删除"  ' +
+                                        'onclick="deleteCost(' + stu.costId + ')"  class="btn_delete"/>')
+                                var tr = $("<tr></tr>").append(costId)
+                                        .append(costName).append(baseDuration).append(baseCost)
+                                        .append(unitCost).append(creatime).append(startime)
+                                        .append(status).append(du)
+                                $("#tbody").append(tr);
+                                console.log(stu);
+                            }
+                        }
+                    }
+                })
         }
+        //时长
+        function sortWhenlong(btnObj) {
+            if (btnObj.className=="sort_asc"){
+                btnObj.className = "sort_desc";
+            }else {
+                btnObj.className = "sort_asc";
+            }
+
+            $("#tbody").empty();
+            if (btnObj.className == "sort_desc")
+                $.ajax({
+                    url:"/Timelength",
+                    success: function (result) {
+                        console.log(result);
+                        if (result.code == "0") {
+                            for (var i = 0; i < result.data.length; i++) {
+                                var stu = result.data[i];
+                                var costId = $("<td></td>").text(stu.costId);
+                                var costName = $("<td onclick='detailsCost("+stu.costId+")'></td>").text(stu.costName);
+                                var baseDuration = $("<td></td>").text(stu.baseDuration);
+                                var baseCost = $("<td></td>").text(stu.baseCost);
+                                var unitCost = $("<td></td>").text(stu.unitCost);
+                                var creatime = $("<td></td>").text(stu.creatime);
+                                var startime = $("<td></td>").text(stu.startime);
+                                var status = $("<td></td>").text(stu.status);
+                                var du = $("<td></td>").append('<input id="sta" type="button" value="启用" onclick="startFee(this)" class="btn_start"/> ' +
+                                        '<input id="updaet" type="button" value="修改"  ' +
+                                        'onclick="updateCost(' + stu.costId + ')" class="btn_modify"/>' + '' +
+                                        '<input id="delete"  type="button" value="删除"  ' +
+                                        'onclick="deleteCost(' + stu.costId + ')"  class="btn_delete"/>')
+                                var tr = $("<tr></tr>").append(costId)
+                                        .append(costName).append(baseDuration).append(baseCost)
+                                        .append(unitCost).append(creatime).append(startime)
+                                        .append(status).append(du)
+                                $("#tbody").append(tr);
+                                console.log(stu);
+                            }
+                        }
+                    }
+                })
+            else
+                $.ajax({
+                    url:"/Timelarge",
+                    success: function (result) {
+                        console.log(result);
+                        if (result.code == "0") {
+                            for (var i = 0; i < result.data.length; i++) {
+                                var stu = result.data[i];
+                                var costId = $("<td></td>").text(stu.costId);
+                                var costName = $("<td onclick='detailsCost("+stu.costId+")'></td>").text(stu.costName);
+                                var baseDuration = $("<td></td>").text(stu.baseDuration);
+                                var baseCost = $("<td></td>").text(stu.baseCost);
+                                var unitCost = $("<td></td>").text(stu.unitCost);
+                                var creatime = $("<td></td>").text(stu.creatime);
+                                var startime = $("<td></td>").text(stu.startime);
+                                var status = $("<td></td>").text(stu.status);
+                                var du = $("<td></td>").append('<input id="sta" type="button" value="启用" onclick="startFee(this)" class="btn_start"/> ' +
+                                        '<input id="updaet" type="button" value="修改"  ' +
+                                        'onclick="updateCost(' + stu.costId + ')" class="btn_modify"/>' + '' +
+                                        '<input id="delete"  type="button" value="删除"  ' +
+                                        'onclick="deleteCost(' + stu.costId + ')"  class="btn_delete"/>')
+                                var tr = $("<tr></tr>").append(costId)
+                                        .append(costName).append(baseDuration).append(baseCost)
+                                        .append(unitCost).append(creatime).append(startime)
+                                        .append(status).append(du)
+                                $("#tbody").append(tr);
+                                console.log(stu);
+                            }
+                        }
+                    }
+                })
+        }
+
+
+
+
+
 
         //启用
         function startFee() {
@@ -58,8 +201,8 @@
         <div class="search_add">
             <div>
                 <!--<input type="button" value="月租" class="sort_asc" onclick="sort(this);" />-->
-                <input type="button" value="基费" class="sort_asc" onclick="sort(this);"/>
-                <input type="button" value="时长" class="sort_asc" onclick="sort(this);"/>
+                <input type="button" value="基费" class="sort_asc" onclick="sortBasefee(this);"/>
+                <input type="button" value="时长" class="sort_asc" onclick="sortWhenlong(this);"/>
             </div>
             <input type="button" value="增加" class="btn_add" onclick="addCost(this)"/>
         </div>
@@ -82,6 +225,9 @@
                     <th class="width50">状态</th>
                     <th class="width200"></th>
                 </tr>
+                <tbody id="tbody">
+
+                </tbody>
                 <!--<tr>-->
                 <!--<td>1</td>-->
                 <!--<td><a href="fee_detail.html">包 20 小时</a></td>-->
@@ -149,7 +295,7 @@
                             .append(costName).append(baseDuration).append(baseCost)
                             .append(unitCost).append(creatime).append(startime)
                             .append(status).append(du)
-                    $("#datalist").append(tr);
+                    $("#tbody").append(tr);
                     console.log(stu);
                 }
             }

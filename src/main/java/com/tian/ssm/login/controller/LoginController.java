@@ -58,6 +58,7 @@ public class LoginController {
         else if (!code1.equalsIgnoreCase(code)){
             return "codeError";
         }
+        session.setAttribute("adminInfo",admin);
         return "success";
     }
 
@@ -211,4 +212,33 @@ public class LoginController {
     public AjaxResult findModuleInfo(){
         return new AjaxResult(adminInfoService.find_ModuleInfo());
     }
+
+
+
+
+    //修改密码
+    @RequestMapping(value = "/update_Admin")
+    @ResponseBody
+    public String updateAdmin(AdminInfo adminInfo,String Pwd){
+        return adminInfoService.updateAdmin(adminInfo,Pwd);
+    }
+
+    //个人信息回显
+    @RequestMapping(value = "/Echo")
+    @ResponseBody
+    public AjaxResult Echo(HttpSession session){
+        AdminInfo admin = (AdminInfo) session.getAttribute("adminInfo");
+        return new AjaxResult(adminInfoService.EchoAdmin(admin));
+    }
+
+    //修改个人信息
+    @RequestMapping(value = "/updateEcho")
+    @ResponseBody
+    public String updateEcho(AdminInfo adminInfo){
+        return  adminInfoService.updateEcho(adminInfo);
+    }
+
+
+
+
 }

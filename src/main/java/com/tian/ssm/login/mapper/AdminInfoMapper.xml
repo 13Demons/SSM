@@ -11,20 +11,14 @@
         <result column="enrolldate" jdbcType="TIMESTAMP" property="enrolldate"/>
 
         <association property="roleInfo" javaType="com.tian.ssm.management.bean.RoleInfo">
-            <result column="role_id" jdbcType="INTEGER" property="roleId"/>
-            <result column="role_name" jdbcType="VARCHAR" property="roleName"/>
+            <id column="role_id"  property="roleId"/>
+            <result column="role_name" property="roleName"/>
         </association>
 
         <association property="adminRole" javaType="com.tian.ssm.login.bean.AdminRole">
             <id column="admin_id" property="adminId"/>
             <result column="role_id" property="roleId"/>
         </association>
-
-        <association property="moduleInfo" javaType="com.tian.ssm.management.bean.ModuleInfo">
-            <id column="module_id" property="moduleId"/>
-            <result column="module_name" property="moduleName"/>
-        </association>
-
 
     </resultMap>
     <resultMap id="ModuleInfo" type="com.tian.ssm.management.bean.ModuleInfo">
@@ -113,6 +107,13 @@
         WHERE admin_id = #{adminId}
     </update>
 
+    <update id="updateAdmin">
+      UPDATE admin_info SET password=#{password} WHERE admin_id=#{adminId}
+    </update>
+    <update id="updateEcho">
+        UPDATE admin_info SET name=#{name},telephone=#{telephone},email=#{email} WHERE admin_id=#{adminId}
+    </update>
+
 
     <delete id="deleteAdmin">
         DELETE FROM admin_info
@@ -148,7 +149,7 @@
     </delete>
 
 
-    <select id="loginAdmin" resultType="com.tian.ssm.login.bean.AdminInfo">
+    <select id="loginAdmin" resultType="com.tian.ssm.login.bean.AdminInfo" resultMap="BaseResultMap">
         SELECT *
         FROM admin_info
         WHERE name = #{name}
@@ -219,6 +220,25 @@
             </where>
         GROUP BY a.admin_id
     </select>
+
+    <!--个人信息-->
+    <select id="EchoAdmin" resultType="com.tian.ssm.login.bean.AdminInfo"  resultMap="BaseResultMap">
+        SELECT
+            a.admin_id   admin_id,
+            a.admin_code admin_code,
+            a.password   password,
+            a.name       name,
+            a.telephone  telephone,
+            a.email      email,
+            a.enrolldate enrolldate,
+            group_concat(r.role_name SEPARATOR ',')
+                         role_name
+        FROM admin_info a LEFT JOIN (admin_role ar ,role_info r )
+                ON a.admin_id = ar.admin_id
+                   AND ar.role_id = r.role_id
+        WHERE a.admin_id=#{adminId}
+    </select>
+
 
 
 </mapper>

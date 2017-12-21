@@ -43,7 +43,7 @@ public interface AdminInfoMapper {
     List<AdminRole> findAdminAndRole(AdminInfo admin);
 
     //查找admin_info
-    List<AdminInfo> find_Admin(Integer adminId);
+    List<AdminInfo> find_Admin(AdminInfo adminInfo);
 
     //查找中间表admin_role
     List<AdminRole> find_AdminR(Integer adminId);
@@ -59,5 +59,14 @@ public interface AdminInfoMapper {
 
     //Module查询
     List<ModuleInfo> find_ModuleInfo();
+
+    //修改密码
+    void updateAdmin(AdminInfo adminInfo);
+
+    //个人信息
+    AdminInfo EchoAdmin(AdminInfo adminInfo);
+
+    //修改个人细信息
+    void updateEcho(AdminInfo adminInfo);
 
 }

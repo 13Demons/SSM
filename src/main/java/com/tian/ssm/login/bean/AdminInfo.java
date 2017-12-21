@@ -33,6 +33,11 @@ public class AdminInfo {
     public AdminInfo() {
     }
 
+    public AdminInfo(Integer adminId, String password) {
+        this.adminId = adminId;
+        this.password = password;
+    }
+
     public AdminInfo(String adminCode, String name, String telephone, String email) {
         this.adminCode = adminCode;
         this.name = name;

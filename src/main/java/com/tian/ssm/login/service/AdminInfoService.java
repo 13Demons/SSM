@@ -5,6 +5,7 @@ import com.tian.ssm.login.bean.AdminRole;
 import com.tian.ssm.management.bean.ModuleInfo;
 import com.tian.ssm.management.bean.RoleInfo;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -14,17 +15,18 @@ import java.util.List;
 public interface AdminInfoService {
     //登录
     AdminInfo loginAdmin(AdminInfo adminInfo);
+
     //管理员查看
-    List<AdminInfo> find(AdminInfo adminInfo,String roleName,Integer moduleId);
+    List<AdminInfo> find(AdminInfo adminInfo, String roleName, Integer moduleId);
 
     //添加管理员
-    String addAdmin(AdminInfo adminInfo,String Pwd,Integer[] roleId);
+    String addAdmin(AdminInfo adminInfo, String Pwd, Integer[] roleId);
 
     //删除管理员
     String deleteAdmin(AdminInfo admin);
 
     //修改管理员
-    String updateAdmin(AdminInfo adminInfo,Integer[] roleId);
+    String updateAdmin(AdminInfo adminInfo, Integer[] roleId);
 
     //查找admin_info
     List<AdminInfo> find_Admin(Integer adminId);
@@ -34,5 +36,14 @@ public interface AdminInfoService {
 
     //Module查询
     List<ModuleInfo> find_ModuleInfo();
+
+    //修改密码
+    String updateAdmin(AdminInfo adminInfo,String Pwd);
+
+    //个人信息
+    AdminInfo EchoAdmin(AdminInfo adminInfo);
+
+    //修改个人细信息
+    String updateEcho(AdminInfo adminInfo);
 
 }

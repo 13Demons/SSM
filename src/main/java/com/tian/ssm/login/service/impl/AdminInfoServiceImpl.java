@@ -9,6 +9,7 @@ import com.tian.ssm.management.mapper.ModuleInfoMapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -57,13 +58,13 @@ public class AdminInfoServiceImpl implements AdminInfoService {
             //电话号
         }
         if ("^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,5-9]))\\d{8}$".equals(adminInfo.getTelephone())
-                || ("^(0\\d{2}-\\d{8}(-\\d{1,4})?)" + "|(0\\d{3}-\\d{7,8}(-\\d{1,4})?)$").equals(adminInfo.getTelephone())
-                || "".equals(adminInfo.getTelephone())) {
+                || ("^(13[0-9]|15[0|3|6|7|8|9]|18[8|9])\\\\d{8}$").equals(adminInfo.getTelephone())
+                || "".equals(adminInfo.getTelephone())||adminInfo.getTelephone().length()>11||adminInfo.getTelephone().length()<7) {
             return "Admin_Telephone";
             //确认邮箱
         }
         if ("^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$".equals(adminInfo.getEmail())
-                || "".equals(adminInfo.getEmail())) {
+                || "".equals(adminInfo.getEmail())||("^[a-z0-9]+([._\\\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$").equals(adminInfo.getEmail())) {
             return "Admin_Email";
             //判断角色是否选中
         }
@@ -79,7 +80,6 @@ public class AdminInfoServiceImpl implements AdminInfoService {
             }
             return "success";
         }
-
     }
 
     //删除管理
@@ -96,7 +96,9 @@ public class AdminInfoServiceImpl implements AdminInfoService {
     //回显admin
     @Override
     public List<AdminInfo> find_Admin(Integer adminId) {
-        return adminInfoMapper.find_Admin(adminId);
+        AdminInfo adminInfo = new AdminInfo();
+        adminInfo.setAdminId(adminId);
+        return adminInfoMapper.find_Admin(adminInfo);
     }
 
     //回显role
@@ -108,6 +110,45 @@ public class AdminInfoServiceImpl implements AdminInfoService {
     @Override
     public List<ModuleInfo> find_ModuleInfo() {
         return adminInfoMapper.find_ModuleInfo();
+    }
+
+    //修改密码
+    @Override
+    public String updateAdmin(AdminInfo adminInfo,String Pwd) {
+        if (adminInfo.getPassword().length() > 30 || adminInfo.getPassword().equals("") || adminInfo.getPassword() == null) {
+            return "AdminPassword";
+        }
+        if (adminInfo.getPassword().length() > 30 || adminInfo.getPassword().equals("") || adminInfo.getPassword() == null) {
+            return "AdminPassword1";
+        }
+        if (!adminInfo.getPassword().equals(Pwd)) {
+            return "AdminPwd";
+        }
+        adminInfoMapper.updateAdmin(adminInfo);
+        return "success";
+    }
+
+
+
+    //个人信息回显
+    @Override
+    public AdminInfo EchoAdmin(AdminInfo adminInfo) {
+        return adminInfoMapper.EchoAdmin(adminInfo);
+    }
+
+    //修改个人信息
+    @Override
+    public String updateEcho(AdminInfo adminInfo) {
+        if (adminInfo.getName().length() > 30 || adminInfo.getName().equals("") || adminInfo.getName() == null) {
+            return "Admin_Name";
+        }if (adminInfo.getTelephone().length()>11||adminInfo.getTelephone().length()<7||
+                adminInfo.getTelephone().equals("\"^(((13[0-9])|(15([0-3]|[5-9]))|(18[0,5-9]))\\\\d{8})|(0\\\\d{2}-\\\\d{8})|(0\\\\d{3}-\\\\d{7})$")){
+            return "Admin_Tele";
+        }if (adminInfo.getEmail().length()>50||adminInfo.getEmail().equals("")||adminInfo.getEmail().equals("\"^([a-z0-9A-Z]+[-|_|\\\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\\\.)+[a-zA-Z]{2,}$\"")){
+            return "Admin_Email";
+        }
+       adminInfoMapper.updateEcho(adminInfo);
+        return "success";
     }
 
 
@@ -123,7 +164,8 @@ public class AdminInfoServiceImpl implements AdminInfoService {
                 || "".equals(adminInfo.getTelephone())) {
             return "Admin_Telephone";
             //确认邮箱
-        } else if ("^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$".equals(adminInfo.getEmail())
+        } else if (("^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+" +
+                "(\\.[a-zA-Z0-9_-]+)+$").equals(adminInfo.getEmail())
                 || "".equals(adminInfo.getEmail())) {
             return "Admin_Email";
             //判断角色是否选中
@@ -137,7 +179,6 @@ public class AdminInfoServiceImpl implements AdminInfoService {
             }
             return "success";
         }
-
     }
 
 

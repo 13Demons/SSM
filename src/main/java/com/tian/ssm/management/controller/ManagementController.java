@@ -5,7 +5,6 @@ import com.tian.ssm.login.bean.AdminRole;
 import com.tian.ssm.login.service.AdminInfoService;
 import com.tian.ssm.login.utils.AjaxResult;
 import com.tian.ssm.management.bean.RoleInfo;
-import com.tian.ssm.management.bean.RoleModule;
 import com.tian.ssm.management.service.RoleInfoService;
 import com.tian.ssm.management.service.RoleModuleService;
 import org.springframework.stereotype.Controller;
@@ -46,14 +45,13 @@ public class ManagementController {
         return "index";
     }
 
-
+    //显示
     @RequestMapping(value = "/ReleMan")
     @ResponseBody
     public AjaxResult Role(RoleInfo roleInfo) {
         return new AjaxResult(roleInfoService.findAllRole(roleInfo));
 
     }
-
 
     @RequestMapping(value = "/role_add")
     public String add() {
@@ -65,7 +63,6 @@ public class ManagementController {
     @RequestMapping(value = "add_add")
     @ResponseBody
     public String addRole(RoleInfo roleInfo, Integer[] moduleId) {
-
         return roleInfoService.addRole(roleInfo, moduleId);
     }
 
@@ -83,7 +80,6 @@ public class ManagementController {
         roleModuleService.delRoleInMiddleTable(roleInfo);
         //删除Id
         roleInfoService.delete(roleInfo.getRoleId());
-
         return "deleteRole";
     }
 
@@ -107,7 +103,7 @@ public class ManagementController {
         return "success";
     }
 
-    //    跳转到修改页面
+    //跳转到修改页面
     @RequestMapping("/up")
     public String up() {
         return "/role/role_modi";
@@ -146,7 +142,6 @@ public class ManagementController {
     @RequestMapping(value = "/deleteAdmin")
     @ResponseBody
     public String deleteAdmin(AdminInfo adminInfo) {
-
         return adminInfoService.deleteAdmin(adminInfo);
     }
 
@@ -185,6 +180,8 @@ public class ManagementController {
     public AjaxResult findModuleInfo() {
         return new AjaxResult(adminInfoService.find_ModuleInfo());
     }
+
+
 
 
 }

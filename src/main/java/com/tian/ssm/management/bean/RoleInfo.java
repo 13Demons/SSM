@@ -7,13 +7,9 @@ import java.util.List;
 
 public class RoleInfo {
     private Integer roleId;
-
     private String roleName;
-
     private ModuleInfo moduleInfo;
-
     private RoleModule roleModule;
-
 
     private List<Integer> moduleId;
     private List<AdminInfo> adminInfos;

@@ -5,7 +5,9 @@ import com.tian.ssm.postage.bean.Cost;
 import java.util.List;
 
 public interface CostMapper {
-    int insert(Cost record);
+
+    //Cost添加
+    void insert(Cost cost);
 
     int insertSelective(Cost record);
     
@@ -17,5 +19,22 @@ public interface CostMapper {
 
     //显示详情
     List<Cost> findCostId(Cost cost);
+
+    //基费从小到大
+    List<Cost> baseClass();
+
+    //基费从大到小
+    List<Cost> Baselarge();
+
+    //时长从小到大
+    List<Cost> Timelength ();
+
+    //时长从大到小
+    List<Cost> Timelarge();
+
+    //修改
+    void updateCost(Cost cost);
+
+
 
 }

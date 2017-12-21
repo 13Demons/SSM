@@ -1,149 +1,141 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tian.ssm.management.mapper.RoleInfoMapper">
-  <resultMap id="BaseResultMap" type="com.tian.ssm.management.bean.RoleInfo">
-    <result column="role_id" jdbcType="INTEGER" property="roleId" />
-    <result column="role_name" jdbcType="VARCHAR" property="roleName" />
+    <resultMap id="BaseResultMap" type="com.tian.ssm.management.bean.RoleInfo">
+        <result column="role_id" jdbcType="INTEGER" property="roleId"/>
+        <result column="role_name" jdbcType="VARCHAR" property="roleName"/>
 
 
-    <association property="moduleInfo" javaType="com.tian.ssm.management.bean.ModuleInfo">
-      <result column="module_id" jdbcType="INTEGER" property="moduleId" />
-      <result column="module_Name" jdbcType="VARCHAR" property="moduleName" />
-    </association>
+        <association property="moduleInfo" javaType="com.tian.ssm.management.bean.ModuleInfo">
+            <result column="module_id" jdbcType="INTEGER" property="moduleId"/>
+            <result column="module_Name" jdbcType="VARCHAR" property="moduleName"/>
+        </association>
 
-    <association property="roleModule" javaType="com.tian.ssm.management.bean.RoleModule">
-      <result column="role_id" jdbcType="INTEGER" property="roleId" />
-      <result column="module_id" jdbcType="INTEGER" property="moduleId" />
-    </association>
+        <association property="roleModule" javaType="com.tian.ssm.management.bean.RoleModule">
+            <result column="role_id" jdbcType="INTEGER" property="roleId"/>
+            <result column="module_id" jdbcType="INTEGER" property="moduleId"/>
+        </association>
 
-  </resultMap>
+    </resultMap>
 
-  <insert id="insert" parameterType="com.tian.ssm.management.bean.RoleInfo">
-    insert into role_info (role_id, role_name)
-    values (#{roleId,jdbcType=INTEGER}, #{roleName,jdbcType=VARCHAR})
-  </insert>
+    <insert id="insert" parameterType="com.tian.ssm.management.bean.RoleInfo">
+        INSERT INTO role_info (role_id, role_name)
+        VALUES (#{roleId,jdbcType=INTEGER}, #{roleName,jdbcType=VARCHAR})
+    </insert>
 
-  <insert id="insertSelective" parameterType="com.tian.ssm.management.bean.RoleInfo">
-    insert into role_info
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="roleId != null">
-        role_id,
-      </if>
-      <if test="roleName != null">
-        role_name,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="roleId != null">
-        #{roleId,jdbcType=INTEGER},
-      </if>
-      <if test="roleName != null">
-        #{roleName,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-
-
+    <insert id="insertSelective" parameterType="com.tian.ssm.management.bean.RoleInfo">
+        insert into role_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="roleId != null">
+                role_id,
+            </if>
+            <if test="roleName != null">
+                role_name,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="roleId != null">
+                #{roleId,jdbcType=INTEGER},
+            </if>
+            <if test="roleName != null">
+                #{roleName,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
 
 
-  <!--添加角色-->
-  <insert id="addRole" useGeneratedKeys="true" keyProperty="roleId">
-    INSERT role_info (role_name) VALUES (#{roleName})
-  </insert>
+    <!--添加角色-->
+    <insert id="addRole" useGeneratedKeys="true" keyProperty="roleId">
+        INSERT role_info (role_name) VALUES (#{roleName})
+    </insert>
 
-  <!--添加角色中关联表-->
-  <insert id="addModu">
-    insert into role_module (role_id, module_id) values (#{roleId},#{moduleInfo.moduleId});
-  </insert>
-
-
+    <!--添加角色中关联表-->
+    <insert id="addModu">
+        INSERT INTO role_module (role_id, module_id) VALUES (#{roleId}, #{moduleInfo.moduleId});
+    </insert>
 
 
-  <update id="update">
+    <update id="update">
 
-  </update>
+    </update>
 
-  <!--编辑角色-->
-  <update id="updateRole">
-    UPDATE role_info
-    SET role_name = #{roleName}
-    WHERE role_id = #{roleId}
-  </update>
-
-
-  <!--删除中间表的数据-->
-  <delete id="deleteRoleModule" parameterType="_int">
-    DELETE FROM role_module WHERE role_id = #{p}
-  </delete>
+    <!--编辑角色-->
+    <update id="updateRole">
+        UPDATE role_info
+        SET role_name = #{roleName}
+        WHERE role_id = #{roleId}
+    </update>
 
 
-  <!--重新插入中间表的数据-->
-  <insert id="addRoleModule" parameterType="_int">
-    INSERT INTO role_module VALUES (#{param1}, #{param2})
-  </insert>
+    <!--删除中间表的数据-->
+    <delete id="deleteRoleModule" parameterType="_int">
+        DELETE FROM role_module
+        WHERE role_id = #{p}
+    </delete>
 
 
-
-  <!--删除-->
-  <delete id="delete">
-    DELETE FROM role_info WHERE role_id=#{roleId}
-  </delete>
-
+    <!--重新插入中间表的数据-->
+    <insert id="addRoleModule" parameterType="_int">
+        INSERT INTO role_module VALUES (#{param1}, #{param2})
+    </insert>
 
 
+    <!--删除-->
+    <delete id="delete">
+        DELETE FROM role_info
+        WHERE role_id = #{roleId}
+    </delete>
 
 
-
-  <!--查询全部-->
-  <select id="findAllRole" resultType="com.tian.ssm.management.bean.RoleInfo" resultMap="BaseResultMap">
-#       SELECT * FROM module_info m,role_info ro,role_module rm
-#       WHERE rm.module_id = m.module_id and rm.role_id = ro.role_id
-SELECT
-  r.role_id   role_id,
-  r.role_name role_name,
-  group_concat(m.module_name SEPARATOR ',')
-              module_name
-FROM role_info r LEFT JOIN (role_module rm, module_info m) ON r.role_id = rm.role_id
-                                                              AND rm.module_id = m.module_id
-GROUP BY r.role_id
-  </select>
-
+    <!--查询全部-->
+    <select id="findAllRole" resultType="com.tian.ssm.management.bean.RoleInfo" resultMap="BaseResultMap">
+        #       SELECT * FROM module_info m,role_info ro,role_module rm
+        #       WHERE rm.module_id = m.module_id and rm.role_id = ro.role_id
+        SELECT
+            r.role_id   role_id,
+            r.role_name role_name,
+            group_concat(m.module_name SEPARATOR ',')
+                        module_name
+        FROM role_info r LEFT JOIN (role_module rm, module_info m) ON r.role_id = rm.role_id
+                        AND rm.module_id = m.module_id
+        GROUP BY r.role_id
+    </select>
 
 
+    <!--查询名字-->
+    <select id="findName" resultType="com.tian.ssm.management.bean.RoleInfo" resultMap="BaseResultMap">
+        SELECT *
+        FROM role_info
+        WHERE role_name = #{roleName}
+    </select>
+
+    <!--查找Id-->
+    <select id="findId" resultType="com.tian.ssm.management.bean.RoleInfo" resultMap="BaseResultMap">
+        SELECT *
+        FROM role_info
+        WHERE role_id = #{roleId}
+    </select>
+
+    <!--删除名字-->
+    <delete id="deleteName">
+        DELETE FROM role_info
+        WHERE role_name = #{roleName}
+    </delete>
 
 
-  <!--查询名字-->
-  <select id="findName" resultType="com.tian.ssm.management.bean.RoleInfo" resultMap="BaseResultMap">
-    SELECT *FROM role_info WHERE role_name=#{roleName}
-  </select>
+    <!--根据id查名字-->
+    <select id="findNameById" resultMap="BaseResultMap">
+        SELECT r.role_name
+        FROM role_info r
+        WHERE role_id = #{roleId}
+    </select>
 
-  <!--查找Id-->
-  <select id="findId" resultType="com.tian.ssm.management.bean.RoleInfo" resultMap="BaseResultMap">
-    SELECT *FROM role_info WHERE role_id=#{roleId}
-  </select>
-
-  <!--删除名字-->
-  <delete id="deleteName">
-    DELETE FROM role_info WHERE role_name=#{roleName}
-  </delete>
-
-
-  <!--根据id查名字-->
-  <select id="findNameById" resultMap="BaseResultMap">
-    SELECT r.role_name
-    FROM role_info r
-    WHERE role_id = #{roleId}
-  </select>
-
-  <!--回显权限-->
-  <select id="roleModules" resultMap="BaseResultMap">
-    SELECT * FROM role_module WHERE role_id = #{param1}
-  </select>
-
-
-
-
-
+    <!--回显权限-->
+    <select id="roleModules" resultMap="BaseResultMap">
+        SELECT *
+        FROM role_module
+        WHERE role_id = #{param1}
+    </select>
 
 
 </mapper>

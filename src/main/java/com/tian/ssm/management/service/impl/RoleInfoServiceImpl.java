@@ -23,7 +23,6 @@ public class RoleInfoServiceImpl implements RoleInfoService {
 
     @Override
     public List<RoleInfo> findAllRole(RoleInfo roleInfo) {
-
         return roleInfoMapper.findAllRole(roleInfo);
     }
 

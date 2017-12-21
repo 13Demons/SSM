@@ -43,7 +43,8 @@ public class CostController {
 
     @RequestMapping(value = "upC")
     @ResponseBody
-    public String updateCost1(){
+    public String updateCost1(Integer costId,HttpSession session){
+        session.setAttribute("costId",costId);
         return "success";
     }
 
@@ -107,12 +108,53 @@ public class CostController {
     @ResponseBody
     public AjaxResult findCostId(HttpSession session){
         Integer costId = (Integer) session.getAttribute("costId");
-        System.out.println(costId);
         return new AjaxResult(costService.findCostId(costId));
     }
 
+    //基本费用从小到大
+    @RequestMapping(value = "baseClass")
+    @ResponseBody
+    public AjaxResult baseClass(){
+        return new AjaxResult(costService.baseClass());
+    }
+    //基本费用从大到小
+    @RequestMapping(value ="Baselarge" )
+    @ResponseBody
+    public AjaxResult Baselarge(){
+        return new AjaxResult(costService.Baselarge());
+    }
+    //时间长从小到大
+    @RequestMapping(value = "Timelength")
+    @ResponseBody
+    public AjaxResult Timelength(){
+        return new AjaxResult(costService.Timelength());
+    }
+
+    //时间长从大到小
+    @RequestMapping(value = "Timelarge")
+    @ResponseBody
+    public AjaxResult Timelarge(){
+        return new AjaxResult(costService.Timelarge());
+    }
+
+    //添加Cost
+    @RequestMapping(value = "addCost")
+    @ResponseBody
+    public String addCost(Cost cost){
+        System.out.println(">>>-------*1*---------+>");
+        String insert = costService.insert(cost);
+        System.out.println(">>>-------*2*---------+>");
+        return insert;
+    }
 
 
+    @RequestMapping(value ="/updateCost")
+    @ResponseBody
+    public String updateCost(Cost cost){
+        System.out.println(cost);
+        String s = costService.updateCost(cost);
+        return s;
+    }
 
 
 }

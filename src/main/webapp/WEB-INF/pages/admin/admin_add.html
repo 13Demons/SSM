@@ -8,11 +8,12 @@
     <link type="text/css" rel="stylesheet" media="all" href="../styles/global_color.css"/>
     <script src="/js/jquery-3.2.1.js"></script>
     <script language="javascript" type="text/javascript">
+
         //保存成功的提示消息
         function showResult() {
             showResultDiv(true);
             window.setTimeout("showResultDiv(false);", 3000);
-            window.setTimeout('location.href = "admin_list"', 3000)
+//            window.setTimeout('location.href = "admin_list"', 3000)
         }
         function showResultDiv(flag) {
             var divResult = document.getElementById("save_result_info");
@@ -185,8 +186,6 @@
                     document.getElementById("email").innerHTML = '';
                     document.getElementById("I").innerHTML = '';
                     showResult();
-
-
                 }
             }
         })

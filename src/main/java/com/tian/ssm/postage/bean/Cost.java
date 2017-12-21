@@ -21,6 +21,14 @@ public class Cost {
 
     private String descr;//备注
 
+    public Cost(String costName, Integer baseDuration, Integer baseCost, Integer unitCost, String descr) {
+        this.costName = costName;
+        this.baseDuration = baseDuration;
+        this.baseCost = baseCost;
+        this.unitCost = unitCost;
+        this.descr = descr;
+    }
+
     @DateTimeFormat(pattern = "yy-MM-dd HH:mm:ss")
     private Date creatime;//创建时间
     @DateTimeFormat(pattern = "yy-MM-dd HH:mm:ss")
@@ -29,6 +37,10 @@ public class Cost {
     private String costType;//费用类型
 
     public Cost() {
+    }
+
+    public Cost(Date creatime) {
+        this.creatime = creatime;
     }
 
     public Cost(Integer costId, String costName, Integer baseDuration, Integer baseCost, Integer unitCost, String status, String descr, Date creatime, Date startime, String costType) {
