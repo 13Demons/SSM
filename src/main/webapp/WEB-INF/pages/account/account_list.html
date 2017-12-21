@@ -4,7 +4,8 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>云科技</title>
         <link type="text/css" rel="stylesheet" media="all" href="../styles/global.css" />
-        <link type="text/css" rel="stylesheet" media="all" href="../styles/global_color.css" /> 
+        <link type="text/css" rel="stylesheet" media="all" href="../styles/global_color.css" />
+        <script src="/js/jquery-3.2.1.js"></script>
         <script language="javascript" type="text/javascript">
             //删除
             function deleteAccount() {
@@ -28,12 +29,12 @@
         <!--导航区域开始-->
         <div id="navi">                        
             <ul id="menu">
-                <li><a href="../index.html" class="index_off"></a></li>
-                <li><a href="../role/role_list.html" class="role_off"></a></li>
-                <li><a href="../admin/admin_list.html" class="admin_off"></a></li>
-                <li><a href="../fee/fee_list.html" class="fee_off"></a></li>
-                <li><a href="../account/account_list.html" class="account_on"></a></li>
-                <li><a href="../service/service_list.html" class="service_off"></a></li>
+                <li><a id="accout_index"  class="index_off"></a></li>
+                <li><a id="accout_role"  class="role_off"></a></li>
+                <li><a id="accout_admin" class="admin_off"></a></li>
+                <li><a id="account_fee"   class="fee_off"></a></li>
+                <li><a href="#" class="account_on"></a></li>
+                <li><a id="accoutservice"  class="service_off"></a></li>
                 <li><a href="../bill/bill_list.html" class="bill_off"></a></li>
                 <li><a href="../report/report_list.html" class="report_off"></a></li>
                 <li><a href="../user/user_info.html" class="information_off"></a></li>
@@ -79,73 +80,77 @@
                         <th class="width150">上次登录时间</th>                                                        
                         <th class="width200"></th>
                     </tr>
-                    <tr>
-                        <td>1</td>
-                        <td><a href="account_detail.html">贾强</a></td>
-                        <td>230102197902137862</td>
-                        <td>jiaqiang</td>
-                        <td>开通</td>
-                        <td>2013-01-23</td>
-                        <td>2013-02-23 00:00:00</td>                            
-                        <td class="td_modi">
-                            <input type="button" value="暂停" class="btn_pause" onclick="setState();" />
-                            <input type="button" value="修改" class="btn_modify" onclick="location.href='account_modi.html';" />
-                            <input type="button" value="删除" class="btn_delete" onclick="deleteAccount();" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td><a href="account_detail.html">贾强</a></td>
-                        <td>230102197902137862</td>
-                        <td>jiaqiang</td>
-                        <td>暂停</td>
-                        <td>2013-01-23</td>
-                        <td>2013-02-23 00:00:00</td>                            
-                        <td class="td_modi">
-                            <input type="button" value="开通" class="btn_start" onclick="setState();" />
-                            <input type="button" value="修改" class="btn_modify" onclick="location.href='account_modi.html';" />
-                            <input type="button" value="删除" class="btn_delete" onclick="deleteAccount();" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td><a href="account_detail.html">贾强</a></td>
-                        <td>230102197902137862</td>
-                        <td>jiaqiang</td>
-                        <td>删除</td>
-                        <td>2013-01-23</td>
-                        <td>2013-02-23 00:00:00</td>                            
-                        <td class="td_modi">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td><a href="account_detail.html">贾强</a></td>
-                        <td>230102197902137862</td>
-                        <td>jiaqiang</td>
-                        <td>开通</td>
-                        <td>2013-01-23</td>
-                        <td>2013-02-23 00:00:00</td>                            
-                        <td class="td_modi">
-                            <input type="button" value="暂停" class="btn_pause" onclick="setState();" />
-                            <input type="button" value="修改" class="btn_modify" onclick="location.href='account_modi.html';" />
-                            <input type="button" value="删除" class="btn_delete" onclick="deleteAccount();" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td><a href="account_detail.html">贾强</a></td>
-                        <td>230102197902137862</td>
-                        <td>jiaqiang</td>
-                        <td>暂停</td>
-                        <td>2013-01-23</td>
-                        <td>2013-02-23 00:00:00</td>                            
-                        <td class="td_modi">
-                            <input type="button" value="开通" class="btn_start" onclick="setState();" />
-                            <input type="button" value="修改" class="btn_modify" onclick="location.href='account_modi.html';" />
-                            <input type="button" value="删除" class="btn_delete" onclick="deleteAccount();" />
-                        </td>
-                    </tr>                    
+
+                        <tbody id="tbody">
+
+                        </tbody>
+                    <!--<tr>-->
+                        <!--<td>1</td>-->
+                        <!--<td><a href="account_detail.html">贾强</a></td>-->
+                        <!--<td>230102197902137862</td>-->
+                        <!--<td>jiaqiang</td>-->
+                        <!--<td>开通</td>-->
+                        <!--<td>2013-01-23</td>-->
+                        <!--<td>2013-02-23 00:00:00</td>                            -->
+                        <!--<td class="td_modi">-->
+                            <!--<input type="button" value="暂停" class="btn_pause" onclick="setState();" />-->
+                            <!--<input type="button" value="修改" class="btn_modify" onclick="location.href='account_modi.html';" />-->
+                            <!--<input type="button" value="删除" class="btn_delete" onclick="deleteAccount();" />-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    <!--<tr>-->
+                        <!--<td>2</td>-->
+                        <!--<td><a href="account_detail.html">贾强</a></td>-->
+                        <!--<td>230102197902137862</td>-->
+                        <!--<td>jiaqiang</td>-->
+                        <!--<td>暂停</td>-->
+                        <!--<td>2013-01-23</td>-->
+                        <!--<td>2013-02-23 00:00:00</td>                            -->
+                        <!--<td class="td_modi">-->
+                            <!--<input type="button" value="开通" class="btn_start" onclick="setState();" />-->
+                            <!--<input type="button" value="修改" class="btn_modify" onclick="location.href='account_modi.html';" />-->
+                            <!--<input type="button" value="删除" class="btn_delete" onclick="deleteAccount();" />-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    <!--<tr>-->
+                        <!--<td>3</td>-->
+                        <!--<td><a href="account_detail.html">贾强</a></td>-->
+                        <!--<td>230102197902137862</td>-->
+                        <!--<td>jiaqiang</td>-->
+                        <!--<td>删除</td>-->
+                        <!--<td>2013-01-23</td>-->
+                        <!--<td>2013-02-23 00:00:00</td>                            -->
+                        <!--<td class="td_modi">-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    <!--<tr>-->
+                        <!--<td>4</td>-->
+                        <!--<td><a href="account_detail.html">贾强</a></td>-->
+                        <!--<td>230102197902137862</td>-->
+                        <!--<td>jiaqiang</td>-->
+                        <!--<td>开通</td>-->
+                        <!--<td>2013-01-23</td>-->
+                        <!--<td>2013-02-23 00:00:00</td>                            -->
+                        <!--<td class="td_modi">-->
+                            <!--<input type="button" value="暂停" class="btn_pause" onclick="setState();" />-->
+                            <!--<input type="button" value="修改" class="btn_modify" onclick="location.href='account_modi.html';" />-->
+                            <!--<input type="button" value="删除" class="btn_delete" onclick="deleteAccount();" />-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    <!--<tr>-->
+                        <!--<td>5</td>-->
+                        <!--<td><a href="account_detail.html">贾强</a></td>-->
+                        <!--<td>230102197902137862</td>-->
+                        <!--<td>jiaqiang</td>-->
+                        <!--<td>暂停</td>-->
+                        <!--<td>2013-01-23</td>-->
+                        <!--<td>2013-02-23 00:00:00</td>                            -->
+                        <!--<td class="td_modi">-->
+                            <!--<input type="button" value="开通" class="btn_start" onclick="setState();" />-->
+                            <!--<input type="button" value="修改" class="btn_modify" onclick="location.href='account_modi.html';" />-->
+                            <!--<input type="button" value="删除" class="btn_delete" onclick="deleteAccount();" />-->
+                        <!--</td>-->
+                    <!--</tr>                    -->
                 </table>
                 <p>业务说明：<br />
                 1、创建则开通，记载创建时间；<br />
@@ -176,4 +181,101 @@
             <p>版权所有(C)云科技有限公司 </p>
         </div>
     </body>
+    <script>
+
+        $("#accout_index").click(function () {
+            $.ajax({
+                url: "accoutIndex",
+                success: function (result) {
+                    if (result == "success") {
+                        window.location.href = 'aI';
+                    }
+                }
+            })
+        });
+
+        $("#account_fee").click(function () {
+            $.ajax({
+                url: "accountFee",
+                success: function (result) {
+                    if (result == "success") {
+                        window.location.href = 'aF';
+                    }
+                }
+            })
+        });
+
+        $("#accoutservice").click(function () {
+            $.ajax({
+                url: "accoutService",
+                success: function (result) {
+                    if (result == "success") {
+                        window.location.href = 'aS';
+                    }
+                }
+            })
+        });
+
+        $.ajax({
+            url: "/findAccount",
+            success: function (result) {
+                console.log(result);
+                if (result.code == "0") {
+                    for (var i = 0; i < result.data.length; i++) {
+                        var stu = result.data[i];
+                        //账号ID
+                        var accountId=$("<td></td>").text(stu.accountId);
+                        //姓名
+                        var realName=$("<td></td>").text(stu.realName);
+                        //身份证
+                        var idcardNo=$("<td></td>").text(stu.idcardNo);
+                        //登录名
+                        var loginName=$("<td></td>").text(stu.loginName);
+                        //状态
+                        var status=$("<td></td>").text(stu.status);
+                        //创建日期
+                        var createDate=$("<td></td>").text(stu.createDate);
+                        //上次登录时间
+                        var lastLoginTime=$("<td></td>").text(stu.lastLoginTime);
+
+                        var du = $("<td></td>").append('<input id="sta" type="button" value="启用" onclick="startFee(this)" class="btn_start"/> ' +
+                                '<input id="updaet" type="button" value="修改"  ' +
+                                'onclick="updateCost(' + stu.accountId + ')" class="btn_modify"/>' + '' +
+                                '<input id="delete"  type="button" value="删除"  ' +
+                                'onclick="deleteCost(' + stu.accountId + ')"  class="btn_delete"/>')
+                        var tr = $("<tr></tr>").append(accountId)
+                                .append(realName).append(idcardNo).append(loginName)
+                                .append(status).append(createDate).append(lastLoginTime)
+                                .append(du);
+                        $("#datalist").append(tr);
+                        console.log(stu);
+                    }
+                }
+            }
+        });
+
+        function deleteCost(data) {
+            var r = window.confirm("确定要删除此账务账号吗？\r\n删除后将不能恢复，且会删除其下属的所有业务账号。");
+            var td = $(this).find("td");
+            $.ajax({
+                url:"/DeleteAccount",
+                data: {
+                    "accountId": data
+                },
+                success: function (result) {
+                    if (result == "success") {
+                        window.location.href = 'accountList';
+                    }
+                }
+            })
+            document.getElementById("operate_result_info").style.display = "block";
+        }
+
+
+
+
+
+
+
+    </script>
 </html>
