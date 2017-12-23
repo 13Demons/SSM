@@ -59,27 +59,29 @@ public class CostServiceImpl implements CostService {
 
     @Override
     public String insert(Cost cost) {
-//        if (cost.getCostName().equals("")||cost.getCostName().length()>50){
-//            //资费名称
-//            return "CostName";
-//        }else if (cost.getBaseDuration().equals("")||
-//                cost.getBaseDuration().equals("^([1-6]\\d{0,3}|100)$")){
-//            //基本时长
-//            return "BaseDuration";
-//        }else if (cost.getBaseCost().equals("")||cost.getBaseCost().equals("^\\d{1,5}(\\.\\d{1,2})?$")){
-//            //基本费用
-//            return "BaseCost";
-//        }else if (cost.getUnitCost().equals("")||cost.getUnitCost().equals("^\\d{1,5}(\\.\\d{1,2})?$")){
-//            //单位费用
-//            return "UnitCost";
-//        }else if (cost.getDescr().equals("")||cost.getDescr().length()>100){
-//            //资费说明
-//            return "Descr";
-//        }
+        if (cost.getCostName().equals("")||cost.getCostName().length()>50){
+            //资费名称
+            return "CostName";
+        }else if (cost.getBaseDuration().equals("")||
+                cost.getBaseDuration().equals("^([1-6]\\d{0,3}|100)$")){
+            //基本时长
+            return "BaseDuration";
+        }else if (cost.getBaseCost().equals("")||cost.getBaseCost().equals("^\\d{1,5}(\\.\\d{1,2})?$")){
+            //基本费用
+            return "BaseCost";
+        }else if (cost.getUnitCost().equals("")||cost.getUnitCost().equals("^\\d{1,5}(\\.\\d{1,2})?$")){
+            //单位费用
+            return "UnitCost";
+        }else if (cost.getDescr().equals("")||cost.getDescr().length()>100){
+            //资费说明
+            return "Descr";
+        }
         //添加
         Cost cost1= new Cost();
         cost1.setCreatime(new Date());
+        cost1.setStatus("0");
         cost.setCreatime(cost1.getCreatime());
+        cost.setStatus(cost1.getStatus());
         costMapper.insert(cost);
         return "success";
     }
@@ -89,6 +91,12 @@ public class CostServiceImpl implements CostService {
     public String updateCost(Cost cost) {
         cost.setStartime(new Date());
         costMapper.updateCost(cost);
+        return "success";
+    }
+
+    @Override
+    public String updateStatus(Cost cost) {
+        costMapper.updateStatus(cost);
         return "success";
     }
 
