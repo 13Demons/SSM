@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+﻿﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -60,7 +60,7 @@
                         </select>
                     </div>
                     <div><input type="button" value="搜索" class="btn_search" /></div>
-                    <input type="button" value="增加" class="btn_add" onclick="location.href='account_add.html';" />
+                    <input type="button" value="增加" class="btn_add" onclick="addAccount(this)" />
                 </div>  
                 <!--删除等的操作提示-->
                 <div id="operate_result_info" class="operate_success">
@@ -219,7 +219,7 @@
         $.ajax({
             url: "/findAccount",
             success: function (result) {
-                console.log(result);
+//                console.log(result);
                 if (result.code == "0") {
                     for (var i = 0; i < result.data.length; i++) {
                         var stu = result.data[i];
@@ -238,15 +238,28 @@
                         //上次登录时间
                         var lastLoginTime=$("<td></td>").text(stu.lastLoginTime);
 
-                        var du = $("<td></td>").append('<input id="sta" type="button" value="启用" onclick="startFee(this)" class="btn_start"/> ' +
-                                '<input id="updaet" type="button" value="修改"  ' +
-                                'onclick="updateCost(' + stu.accountId + ')" class="btn_modify"/>' + '' +
-                                '<input id="delete"  type="button" value="删除"  ' +
-                                'onclick="deleteCost(' + stu.accountId + ')"  class="btn_delete"/>')
-                        var tr = $("<tr></tr>").append(accountId)
-                                .append(realName).append(idcardNo).append(loginName)
-                                .append(status).append(createDate).append(lastLoginTime)
-                                .append(du);
+//                        alert(stu.status)
+                        if(stu.status=="1"){
+                            var du = $("<td></td>").append('<input id="sta" type="button" value="暂停" onclick="startFee(this)" class="btn_start"/> ' +
+                                    '<input id="updaet" type="button" value="修改"  ' +
+                                    'onclick="updateAccount(' + stu.accountId + ')" class="btn_modify"/>' + '' +
+                                    '<input id="delete"  type="button" value="删除"  ' +
+                                    'onclick="deleteAccount(' + stu.accountId + ')"  class="btn_delete"/>')
+                            var tr = $("<tr></tr>").append(accountId)
+                                    .append(realName).append(idcardNo).append(loginName)
+                                    .append(status).append(createDate).append(lastLoginTime)
+                                    .append(du);
+                        }else if (stu.status=="0"){
+                            var du = $("<td></td>").append('<input id="sta" type="button" value="启用" onclick="startFee(this)" class="btn_pause"/> ' +
+                                    '<input id="updaet" type="button" value="修改"  ' +
+                                    'onclick="updateAccount(' + stu.accountId + ')" class="btn_modify"/>' + '' +
+                                    '<input id="delete"  type="button" value="删除"  ' +
+                                    'onclick="deleteAccount(' + stu.accountId + ')"  class="btn_delete"/>')
+                            var tr = $("<tr></tr>").append(accountId)
+                                    .append(realName).append(idcardNo).append(loginName)
+                                    .append(status).append(createDate).append(lastLoginTime)
+                                    .append(du);
+                        }
                         $("#datalist").append(tr);
                         console.log(stu);
                     }
@@ -254,7 +267,8 @@
             }
         });
 
-        function deleteCost(data) {
+        //删除
+        function deleteAccount(data) {
             var r = window.confirm("确定要删除此账务账号吗？\r\n删除后将不能恢复，且会删除其下属的所有业务账号。");
             var td = $(this).find("td");
             $.ajax({
@@ -272,6 +286,75 @@
         }
 
 
+
+        //修改
+        function updateAccount(accountId) {
+            alert(accountId)
+            $.ajax({
+                url: "/updateA",
+                data: {
+                    "accountId": accountId
+                },
+                success: function (result) {
+                    if (result == "success") {
+                        window.location.href = "update_Account?accountId=" + accountId;
+                    }
+                }
+            })
+        }
+
+        //添加
+        function addAccount() {
+            $.ajax({
+                url: "/addA",
+                success: function (result) {
+                    if (result == "success") {
+                        window.location.href = "add_Account";
+                    }
+                }
+            })
+        }
+
+        //状态
+        function startFee(obj) {
+            if (obj.className=="btn_start"){
+                var r = window.confirm("确定要开通此账务账号吗？");
+                $("#datalist tr").click(function () {
+                    var td=$(this).find("td");
+                    var accountId = td.eq(0).html();
+                    $.ajax({
+                        url:"/updateStruts",
+                        data:{
+                            "accountId":accountId,
+                            "status":0
+                        },
+                        success: function (resule) {
+                            if (resule=="success"){
+                                window.location.href = "account_list";
+                            }
+                        }
+                    })
+                })
+            }else if (obj.className=="btn_pause"){
+                var r = window.confirm("确定要关闭此账务账号吗？");
+                $("#datalist tr").click(function () {
+                    var td=$(this).find("td");
+                    var accountId = td.eq(0).html();
+                    $.ajax({
+                        url:"/updateStruts",
+                        data:{
+                            "accountId":accountId,
+                            "status":1
+                        },
+                        success: function (resule) {
+                            if (resule=="success"){
+                                window.location.href = "account_list";
+                            }
+                        }
+                    })
+                })
+            }
+        }
 
 
 
