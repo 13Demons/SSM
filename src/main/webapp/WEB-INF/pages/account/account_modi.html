@@ -60,15 +60,16 @@
                     <!--必填项-->
                     <div class="text_info clearfix"><span>账务账号ID：</span></div>
                     <div class="input_info">
-                        <input type="text" value="10" readonly class="readonly" id="AccountId" />
+
+                        <input type="text" value="" readonly class="readonly" id="AccountId" />
                     </div>
 
                     <div class="text_info clearfix"><span>姓名：</span></div>
                     <div class="input_info">
                         <input type="text" value=""  id="RealName"/>
 
-                        <span class="required">*</span>
-                        <div class="validate_msg_long error_msg">20长度以内的汉字、字母和数字的组合</div>
+                        <span class="required"></span>
+                        <div class="validate_msg_long error_msg" id="Name"></div>
 
                     </div>
                     <div class="text_info clearfix"><span>身份证：</span></div>
@@ -112,22 +113,23 @@
                     <div class="input_info">
                         <input type="text" class="width200" id="Telephone"/>
 
-                        <span class="required">*</span>
-                        <div class="validate_msg_medium error_msg">正确的电话号码格式：手机或固话</div>
+
+                        <div class="validate_msg_medium error_msg" id="TE"></div>
                     </div>
-                    <div class="text_info clearfix"><span>推荐人身份证号码：</span></div>
+                    <div class="text_info clearfix"><span>推荐人ID：</span></div>
                     <div class="input_info">
-                        <input type="text" id="IdcardNoJ"/>
-                        <div class="validate_msg_long error_msgs">正确的身份证号码格式</div>
+                        <input type="text" id="RecommenderId"/>
+                        <div class="validate_msg_long error_msgs" id="RId"></div>
                     </div>
                     <div class="text_info clearfix"><span>生日：</span></div>
                     <div class="input_info">
                         <input type="text" value="" id="Dirthdate" readonly class="readonly" />
                     </div>
+
                     <div class="text_info clearfix"><span>Email：</span></div>
                     <div class="input_info">
                         <input type="text" class="width200" id="Email"/>
-                        <div class="validate_msg_medium">50长度以内，合法的 Email 格式</div>
+                        <div class="validate_msg_medium" id="E"></div>
                     </div> 
                     <div class="text_info clearfix"><span>职业：</span></div>
                     <div class="input_info">
@@ -147,23 +149,23 @@
                     </div> 
                     <div class="text_info clearfix"><span>通信地址：</span></div>
                     <div class="input_info">
-                        <input type="text" class="width350"/>
-                        <div class="validate_msg_tiny">50长度以内</div>
+                        <input type="text" class="width350" id="Mailaddress"/>
+                        <div class="validate_msg_tiny" id="MD"></div>
                     </div> 
                     <div class="text_info clearfix"><span>邮编：</span></div>
                     <div class="input_info">
-                        <input type="text"/>
-                        <div class="validate_msg_long">6位数字</div>
+                        <input type="text" id="Zipcode"/>
+                        <div class="validate_msg_long" id="Z"></div>
                     </div> 
                     <div class="text_info clearfix"><span>QQ：</span></div>
                     <div class="input_info">
-                        <input type="text"/>
-                        <div class="validate_msg_long">5到13位数字</div>
+                        <input type="text" id="Qq"/>
+                        <div class="validate_msg_long" id="Q"></div>
                     </div>                
                     <!--操作按钮-->
                     <div class="button_info clearfix">
-                        <input type="button" value="保存" class="btn_save" onclick="showResult();" />
-                        <input type="button" value="取消" class="btn_save" />
+                        <input type="button" value="保存" class="btn_save" id="updAccount" />
+                        <input type="button" value="取消" class="btn_save" onclick="javascript:window.history.back(-1)"/>
                     </div>
                 </form>  
         </div>
@@ -180,15 +182,67 @@
             url: "/findAccountId",
             success: function (result) {
                 console.log(result);
-                $("#CostID").val(result.data[0].costId);
-                $("#costName").val(result.data[0].costName);
-                $("#BaseDuration").val(result.data[0].baseDuration);
-                $("#BaseCost").val(result.data[0].baseCost);
-                $("#UnitCost").val(result.data[0].unitCost);
-                $("#Descr").val(result.data[0].descr);
+                $("#AccountId").val(result.data.accountId);
+                $("#RealName").val(result.data.realName);
+                $("#IdcardNo").val(result.data.idcardNo);
+                $("#LoginName").val(result.data.loginName);
+                $("#Telephone").val(result.data.telephone);
+                $("#RecommenderId").val(result.data.recommenderId);
+                $("#Dirthdate").val(result.data.birthdate);
+                $("#Email").val(result.data.email);
+                //职业性别
+                $("#occupation").val(result.data.occupation);
+                $("#gender").val(result.data.gender);
+                $("#Mailaddress").val(result.data.mailaddress);
+                $("#Zipcode").val(result.data.zipcode);
+                $("#Qq").val(result.data.qq);
             }
-        })
+        });
 
+        
+        $("#updAccount").click(function () {
+            $.ajax({
+                url:"/updateAccount",
+                data:{
+                    "accountId":$("#AccountId").val(),
+                    "realName":$("#RealName").val(),
+                    "telephone": $("#Telephone").val(),
+                    "recommenderId": $("#RecommenderId").val(),
+                    "email": $("#Email").val(),
+                    "mailaddress": $("#Mailaddress").val(),
+                    "zipcode": $("#Zipcode").val(),
+                    "qq": $("#Qq").val(),
+                },
+                success: function (resule) {
+                    if (resule=="account_Name"){
+                        document.getElementById("Name").innerHTML = '20长度以内的汉字、字母和数字的组合'
+                    }
+                   else if (resule=="account_Telephone"){
+                        document.getElementById("TE").innerHTML = '正确的电话号码格式：手机或固话'
+                    }else if (resule=="account_RecommenderId"){
+                        document.getElementById("RId").innerHTML = '正确的格式'
+                    }else if (resule=="account_Email"){
+                        document.getElementById("E").innerHTML = '50长度以内，合法的 Email 格式'
+                    }else if (resule=="account_Mailaddress"){
+                        document.getElementById("MD").innerHTML = '50长度以内'
+                    }else if (resule=="account_Zipcode"){
+                        document.getElementById("Z").innerHTML = '6位数字'
+                    }else if (resule=="account_Qq"){
+                        document.getElementById("Q").innerHTML = '5到13位数字'
+                    }else if (resule=="success"){
+                        document.getElementById("Name").innerHTML = '';
+                        document.getElementById("TE").innerHTML = '';
+                        document.getElementById("RId").innerHTML = '';
+                        document.getElementById("E").innerHTML = '';
+                        document.getElementById("MD").innerHTML = '';
+                        document.getElementById("Z").innerHTML = '';
+                        document.getElementById("Q").innerHTML = '';
+                    }
+                }
+            })
+        })
+        
+        
 
 
 
